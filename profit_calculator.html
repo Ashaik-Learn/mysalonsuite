@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Profit Calculator – My Salon Suite</title>
+
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&f[]=zodiak@400,500,700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+  --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+  --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  --font-display: 'Zodiak', Georgia, serif;
+  --font-body: 'Cabinet Grotesk', 'Helvetica Neue', Arial, sans-serif;
+
+  --bg: #0d0b0a;
+  --surface: #141210;
+  --surface-2: #1b1815;
+  --surface-3: #24201b;
+  --surface-4: #2d2822;
+  --border: rgba(255,255,255,0.09);
+  --border-soft: rgba(255,255,255,0.05);
+
+  --text: #f3eee6;
+  --text-muted: #a49c8f;
+  --text-faint: #6f665b;
+  --text-inverse: #0d0b0a;
+
+  --teal: #66c7c9;
+  --teal-strong: #33b0b3;
+  --teal-dim: rgba(102,199,201,0.12);
+  --orange: #ef5a24;
+  --orange-strong: #d64a16;
+  --orange-dim: rgba(239,90,36,0.14);
+  --cream: #f4ead4;
+
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.24);
+  --shadow-md: 0 10px 28px rgba(0,0,0,0.34);
+  --shadow-lg: 0 18px 60px rgba(0,0,0,0.45);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top center, rgba(239,90,36,0.08), transparent 32%),
+    linear-gradient(180deg, #0f0d0c 0%, #0d0b0a 100%);
+}
+
+img, svg { display: block; max-width: 100%; height: auto; }
+input, button { font: inherit; color: inherit; }
+button { border: none; background: none; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+
+.site-shell { width: 100%; }
+
+/* Header */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(14px);
+  background: rgba(13, 11, 10, 0.88);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.topbar {
+  max-width: 1180px; margin: 0 auto; padding: 1rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+
+.brand { display: inline-flex; align-items: center; gap: 0.85rem; }
+
+.brand-mark {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--orange), #ff875f);
+  display: grid; place-items: center; box-shadow: var(--shadow-sm); flex-shrink: 0;
+}
+
+.brand-mark span {
+  font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: white; line-height: 1;
+}
+
+.brand-copy { line-height: 0.95; }
+
+.brand-copy .brand-my {
+  font-family: var(--font-display); font-size: 1.45rem; color: var(--cream); letter-spacing: -0.03em;
+}
+
+.brand-copy .brand-my em { color: var(--orange); font-style: normal; }
+
+.brand-copy .brand-sub {
+  margin-top: 0.2rem; font-size: 0.74rem; letter-spacing: 0.18em;
+  text-transform: uppercase; font-weight: 700; color: var(--teal);
+}
+
+.header-actions { display: flex; align-items: center; gap: 0.75rem; }
+
+.icon-btn {
+  width: 42px; height: 42px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--surface-2); display: grid; place-items: center; color: var(--text);
+  transition: transform var(--transition), background var(--transition), border-color var(--transition);
+}
+
+.icon-btn:hover { background: var(--surface-3); border-color: rgba(102,199,201,0.35); transform: translateY(-1px); }
+
+.nav-strip { display: grid; grid-template-columns: 1fr 1fr; background: var(--teal); }
+
+.nav-strip a {
+  min-height: 72px; display: grid; place-items: center; text-align: center;
+  color: #0f1212; padding: 0.85rem 1rem; font-weight: 800; letter-spacing: -0.01em;
+  transition: background var(--transition);
+}
+
+.nav-strip a:first-child { border-right: 1px solid rgba(0,0,0,0.16); }
+.nav-strip a:hover { background: #56babb; }
+
+.nav-strip a small {
+  display: block; font-size: 0.72rem; letter-spacing: 0.14em;
+  text-transform: uppercase; opacity: 0.72; margin-bottom: 0.15rem;
+}
+
+/* Hero */
+.hero-band { background: var(--orange); padding: 1.75rem 1rem 1.15rem; text-align: center; }
+
+.hero-band h1 {
+  font-family: var(--font-display); font-size: clamp(2.2rem, 1.1rem + 4vw, 4.5rem);
+  line-height: 0.95; color: #180f0b; letter-spacing: -0.03em;
+}
+
+.hero-sub {
+  background: var(--cream); color: #17120e; text-align: center;
+  padding: 1rem 1.25rem; font-size: var(--text-base); font-weight: 700;
+}
+
+/* Main */
+.main-wrap {
+  max-width: 1180px; margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem) 1rem 4rem;
+}
+
+.calculator-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.form-stack { display: grid; gap: 1.25rem; }
+
+.panel-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 100%), var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm); overflow: hidden;
+}
+
+.card-head {
+  padding: 1.4rem 1.4rem 0.8rem;
+  display: flex; align-items: start; gap: 0.9rem;
+}
+
+.card-head-icon {
+  min-width: 2.4rem; height: 2.4rem; border-radius: 999px;
+  display: grid; place-items: center; font-size: 1rem; flex-shrink: 0;
+}
+
+.card-head-icon.commission { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(239,90,36,0.25); }
+.card-head-icon.suite { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(102,199,201,0.22); }
+
+.card-head h2 {
+  font-family: var(--font-display); font-size: var(--text-xl);
+  color: var(--cream); line-height: 1.05; margin-bottom: 0.2rem;
+}
+
+.card-head p { color: var(--text-muted); font-size: var(--text-sm); }
+
+.card-body { padding: 0 1.4rem 1.4rem; }
+
+/* Fields */
+.fields-stack { display: grid; gap: 1rem; }
+
+.field-group { display: grid; gap: 0.45rem; }
+
+.field-group label {
+  font-size: 0.76rem; letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--text-muted); font-weight: 800;
+}
+
+.input-wrap { position: relative; }
+
+.input-prefix, .input-suffix {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  color: var(--text-faint); font-weight: 700; pointer-events: none;
+}
+
+.input-prefix { left: 0.95rem; }
+.input-suffix { right: 0.95rem; }
+
+.field-group input {
+  width: 100%; min-height: 54px; background: #120f0d; border: 1px solid var(--border);
+  border-radius: 0.95rem; color: var(--text); padding: 0.95rem 1rem; font-size: 1rem;
+  font-weight: 600; transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.field-group input.has-prefix { padding-left: 2rem; }
+.field-group input.has-suffix { padding-right: 2.2rem; }
+
+.field-group input:focus {
+  border-color: rgba(102,199,201,0.5);
+  box-shadow: 0 0 0 3px rgba(102,199,201,0.12);
+  background: #15110f; outline: none;
+}
+
+/* Results panel */
+.result-column { display: grid; gap: 1rem; position: sticky; top: 120px; }
+
+.result-card {
+  background: linear-gradient(180deg, rgba(102,199,201,0.06), rgba(255,255,255,0.01)), var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-2xl);
+  padding: 1.35rem; box-shadow: var(--shadow-sm);
+}
+
+.result-card-title {
+  font-family: var(--font-display); font-size: 1.5rem; color: var(--cream);
+  line-height: 1; margin-bottom: 0.25rem;
+}
+
+.result-card .result-sub {
+  color: var(--text-muted); font-size: var(--text-sm); margin-bottom: 1.25rem;
+}
+
+.result-section { margin-bottom: 1.25rem; }
+
+.result-section-title {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em;
+  font-weight: 800; color: var(--text-faint); margin-bottom: 0.7rem;
+  padding-bottom: 0.4rem; border-bottom: 1px solid var(--border-soft);
+}
+
+.result-line {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 0.38rem 0; gap: 0.5rem;
+}
+
+.result-line-label { font-size: var(--text-sm); color: var(--text-muted); }
+
+.result-line-value {
+  font-family: var(--font-display); font-size: 1.05rem; color: var(--cream);
+  white-space: nowrap;
+}
+
+.result-line.sub-total { border-top: 1px solid var(--border-soft); margin-top: 0.3rem; padding-top: 0.6rem; }
+.result-line.sub-total .result-line-value { color: var(--teal); }
+
+.annual-block {
+  background: linear-gradient(135deg, rgba(102,199,201,0.16), rgba(239,90,36,0.10));
+  border: 1px solid rgba(102,199,201,0.2); border-radius: 1rem; padding: 1rem 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.annual-block .annual-label {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em;
+  font-weight: 800; color: var(--text-muted); margin-bottom: 0.2rem;
+}
+
+.annual-block .annual-value {
+  font-family: var(--font-display); font-size: clamp(2rem, 1.4rem + 1.5vw, 2.8rem);
+  color: white; line-height: 1;
+}
+
+.compare-block {
+  margin-top: 1rem; padding: 1rem;
+  border-radius: 1rem; background: rgba(239,90,36,0.08);
+  border: 1px solid rgba(239,90,36,0.18);
+}
+
+.compare-block strong {
+  display: block; color: var(--orange); font-size: var(--text-sm); margin-bottom: 0.2rem;
+}
+
+.compare-block p { color: var(--text-muted); font-size: var(--text-sm); }
+
+.bar-panel { margin-top: 1rem; }
+
+.bar-head {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;
+}
+
+.bar-head span {
+  font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.1em;
+  font-weight: 800; color: var(--text-muted);
+}
+
+.bar-head strong { font-family: var(--font-display); color: var(--teal); font-size: 1.25rem; }
+
+.bar-track {
+  width: 100%; height: 12px; border-radius: 999px;
+  background: var(--surface-3); overflow: hidden;
+}
+
+.bar-fill {
+  width: 0%; height: 100%; border-radius: inherit;
+  background: linear-gradient(90deg, var(--teal), var(--orange));
+  transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Divider between two result cards */
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Footer */
+.footer { margin-top: 2rem; background: #080707; border-top: 1px solid var(--border-soft); }
+
+.footer-top {
+  max-width: 1180px; margin: 0 auto; padding: 2rem 1rem 1.2rem; text-align: center;
+}
+
+.footer-creative { margin-bottom: 1rem; }
+
+.footer-creative .line-1 {
+  background: var(--orange); color: #120c09; padding: 0.4rem 1rem;
+  font-family: var(--font-display); font-size: clamp(1.8rem, 0.9rem + 2.4vw, 2.8rem); line-height: 0.95;
+}
+
+.footer-creative .line-2 {
+  background: var(--cream); color: #0f0b08; padding: 0.35rem 1rem 0.5rem;
+  font-family: var(--font-display); font-size: clamp(1.8rem, 0.9rem + 2.4vw, 2.8rem); line-height: 0.95;
+}
+
+.social-row { display: flex; justify-content: center; gap: 0.85rem; margin: 1.5rem 0 1.25rem; }
+
+.social-icon {
+  width: 46px; height: 46px; border: 1px solid rgba(102,199,201,0.35);
+  border-radius: 999px; display: grid; place-items: center; color: var(--teal);
+}
+
+.footer-links { display: grid; gap: 0.5rem; margin-bottom: 1.5rem; }
+.footer-links a { color: #f07b4b; font-size: 1.05rem; }
+.footer-links a:hover { color: var(--teal); }
+
+.footer-bottom {
+  max-width: 1180px; margin: 0 auto; padding: 0 1rem 2rem;
+  text-align: center; color: var(--text-muted); font-size: 0.94rem;
+}
+
+.footer-bottom .mini-links { margin-top: 0.8rem; color: var(--text-faint); }
+.footer-bottom .mini-links a:hover { color: var(--teal); }
+
+.disclaimer {
+  max-width: 880px; margin: 1rem auto 0; padding: 0 1rem;
+  text-align: center; color: var(--text-faint); font-size: 0.78rem;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .calculator-panel { grid-template-columns: 1fr; }
+  .result-column { position: static; top: auto; }
+  .results-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .nav-strip a { min-height: 64px; font-size: 0.95rem; }
+  .hero-sub { font-size: 0.95rem; }
+  .topbar { padding: 0.85rem 1rem; }
+  .brand-mark { width: 42px; height: 42px; }
+  .brand-copy .brand-my { font-size: 1.25rem; }
+  .card-head, .card-body, .result-card { padding-left: 1rem; padding-right: 1rem; }
+  .card-body { padding-bottom: 1rem; }
+}
+</style>
+</head>
+<body>
+<div class="site-shell">
+
+  <header class="site-header">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-mark"><span>m</span></div>
+        <div class="brand-copy">
+          <div class="brand-my">m<em>y</em></div>
+          <div class="brand-sub">salon suite</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" aria-label="Toggle theme" onclick="toggleTheme()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3A7 7 0 0 0 21 12.79Z"></path>
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="Open menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="nav-strip">
+      <a href="#">
+        <span><small>Clients</small>book my service</span>
+      </a>
+      <a href="#">
+        <span><small>Professionals</small>request suite info</span>
+      </a>
+    </div>
+  </header>
+
+  <section class="hero-band">
+    <h1>see the savings</h1>
+  </section>
+  <div class="hero-sub">
+    Check out how easy it is to keep more of your money with My Salon Suite®
+  </div>
+
+  <main class="main-wrap">
+    <div class="calculator-panel">
+
+      <!-- LEFT: Input Forms -->
+      <section class="form-stack">
+
+        <!-- Commission Earnings Inputs -->
+        <div class="panel-card">
+          <div class="card-head">
+            <div class="card-head-icon commission">✂</div>
+            <div>
+              <h2>Commission Earnings</h2>
+              <p>Enter your current numbers as a commission-based stylist.</p>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="fields-stack">
+
+              <div class="field-group">
+                <label for="grossRevenue">Gross Weekly Service Revenue</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="grossRevenue" class="has-prefix" value="6000" min="0" oninput="calculate()">
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="commissionPct">Your % Commission on Service Revenue</label>
+                <div class="input-wrap">
+                  <input type="number" id="commissionPct" class="has-suffix" value="10" min="0" max="100" oninput="calculate()">
+                  <span class="input-suffix">%</span>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="weeklyProductSales">Weekly Product Sales</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="weeklyProductSales" class="has-prefix" value="200" min="0" oninput="calculate()">
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="productCommissionPct">Your % Commission on Product Sales</label>
+                <div class="input-wrap">
+                  <input type="number" id="productCommissionPct" class="has-suffix" value="10" min="0" max="100" oninput="calculate()">
+                  <span class="input-suffix">%</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Salon Suite Inputs -->
+        <div class="panel-card">
+          <div class="card-head">
+            <div class="card-head-icon suite">◈</div>
+            <div>
+              <h2>Salon Suite Earnings</h2>
+              <p>Enter your projected expenses as a suite owner.</p>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="fields-stack">
+
+              <div class="field-group">
+                <label for="weeklyRent">Your Weekly Rent</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="weeklyRent" class="has-prefix" value="700" min="0" oninput="calculate()">
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="weeklyMisc">Your Weekly Misc. Expenses</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="weeklyMisc" class="has-prefix" value="300" min="0" oninput="calculate()">
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT: Results -->
+      <aside class="result-column">
+
+        <div class="results-grid">
+
+          <!-- Commission Results -->
+          <div class="result-card">
+            <div class="result-card-title">Commission</div>
+            <div class="result-sub">Your take-home as an employee</div>
+
+            <div class="result-section">
+              <div class="result-section-title">Weekly Breakdown</div>
+              <div class="result-line">
+                <span class="result-line-label">Service Revenue Earnings</span>
+                <span class="result-line-value" id="c-serviceEarnings">$600</span>
+              </div>
+              <div class="result-line">
+                <span class="result-line-label">Amount Kept by Salon</span>
+                <span class="result-line-value" id="c-salonKeeps">$5,400</span>
+              </div>
+              <div class="result-line">
+                <span class="result-line-label">Product Sales Earnings</span>
+                <span class="result-line-value" id="c-productEarnings">$20</span>
+              </div>
+              <div class="result-line sub-total">
+                <span class="result-line-label">Weekly Net Income</span>
+                <span class="result-line-value" id="c-weeklyNet">$620</span>
+              </div>
+            </div>
+
+            <div class="annual-block">
+              <div class="annual-label">Your Net Annual Income</div>
+              <div class="annual-value" id="c-annualNet">$32,240</div>
+            </div>
+          </div>
+
+          <!-- Salon Suite Results -->
+          <div class="result-card">
+            <div class="result-card-title">Salon Suite</div>
+            <div class="result-sub">Your take-home as a suite owner</div>
+
+            <div class="result-section">
+              <div class="result-section-title">Weekly Breakdown</div>
+              <div class="result-line">
+                <span class="result-line-label">Service Revenue Earnings</span>
+                <span class="result-line-value" id="s-serviceEarnings">$5,000</span>
+              </div>
+              <div class="result-line">
+                <span class="result-line-label">Product Sales Earnings <small style="opacity:0.6">(50%)</small></span>
+                <span class="result-line-value" id="s-productEarnings">$100</span>
+              </div>
+              <div class="result-line">
+                <span class="result-line-label">Weekly Rent</span>
+                <span class="result-line-value" id="s-rent">−$700</span>
+              </div>
+              <div class="result-line">
+                <span class="result-line-label">Misc. Expenses</span>
+                <span class="result-line-value" id="s-misc">−$300</span>
+              </div>
+              <div class="result-line sub-total">
+                <span class="result-line-label">Weekly Net Income</span>
+                <span class="result-line-value" id="s-weeklyNet">$4,100</span>
+              </div>
+            </div>
+
+            <div class="annual-block">
+              <div class="annual-label">Your Net Annual Income</div>
+              <div class="annual-value" id="s-annualNet">$213,200</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Comparison bar -->
+        <div class="result-card">
+          <div class="result-card-title">You Could Earn More</div>
+          <div class="result-sub">Annual difference between suite ownership vs. commission</div>
+
+          <div class="bar-panel">
+            <div class="bar-head">
+              <span>Commission</span>
+              <strong id="bar-pct">—</strong>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" id="bar-fill"></div>
+            </div>
+          </div>
+
+          <div class="compare-block" id="compare-block" style="margin-top:1rem;">
+            <strong id="compare-title">Extra Annual Income</strong>
+            <p id="compare-text">As a suite owner, you could keep significantly more of what you earn.</p>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <p class="disclaimer">* This calculator is for illustrative purposes only. Actual earnings and expenses may vary. Salon suite product commission is assumed at 50% as industry standard.</p>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-creative">
+        <div class="line-1">own your</div>
+        <div class="line-2">business.</div>
+      </div>
+      <div class="social-row">
+        <a href="#" class="social-icon" aria-label="Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <circle cx="12" cy="12" r="4"></circle>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle>
+          </svg>
+        </a>
+        <a href="#" class="social-icon" aria-label="Facebook">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+          </svg>
+        </a>
+        <a href="#" class="social-icon" aria-label="YouTube">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"></path>
+            <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"></polygon>
+          </svg>
+        </a>
+      </div>
+      <div class="footer-links">
+        <a href="#">mysalonsuite.com</a>
+        <a href="#">Find a Location Near You</a>
+        <a href="#">Request Suite Information</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2025 My Salon Suite. All rights reserved.</div>
+      <div class="mini-links">
+        <a href="#">Privacy Policy</a> · <a href="#">Terms of Use</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+function fmt(n) {
+  return '$' + Math.round(n).toLocaleString('en-US');
+}
+
+function val(id) {
+  return parseFloat(document.getElementById(id).value) || 0;
+}
+
+function calculate() {
+  const grossRevenue      = val('grossRevenue');
+  const commissionPct     = val('commissionPct') / 100;
+  const weeklyProductSales = val('weeklyProductSales');
+  const productCommPct    = val('productCommissionPct') / 100;
+  const weeklyRent        = val('weeklyRent');
+  const weeklyMisc        = val('weeklyMisc');
+
+  // Commission side
+  const cServiceEarnings  = grossRevenue * commissionPct;
+  const cSalonKeeps       = grossRevenue - cServiceEarnings;
+  const cProductEarnings  = weeklyProductSales * productCommPct;
+  const cWeeklyNet        = cServiceEarnings + cProductEarnings;
+  const cAnnualNet        = cWeeklyNet * 52;
+
+  // Salon Suite side — stylist keeps all service revenue (100%), 50% of product sales
+  const sServiceEarnings  = grossRevenue;
+  const sProductEarnings  = weeklyProductSales * 0.50;
+  const sWeeklyNet        = sServiceEarnings + sProductEarnings - weeklyRent - weeklyMisc;
+  const sAnnualNet        = sWeeklyNet * 52;
+
+  // Update commission results
+  document.getElementById('c-serviceEarnings').textContent = fmt(cServiceEarnings);
+  document.getElementById('c-salonKeeps').textContent      = fmt(cSalonKeeps);
+  document.getElementById('c-productEarnings').textContent = fmt(cProductEarnings);
+  document.getElementById('c-weeklyNet').textContent       = fmt(cWeeklyNet);
+  document.getElementById('c-annualNet').textContent       = fmt(cAnnualNet);
+
+  // Update suite results
+  document.getElementById('s-serviceEarnings').textContent = fmt(sServiceEarnings);
+  document.getElementById('s-productEarnings').textContent = fmt(sProductEarnings);
+  document.getElementById('s-rent').textContent            = '−' + fmt(weeklyRent);
+  document.getElementById('s-misc').textContent            = '−' + fmt(weeklyMisc);
+  document.getElementById('s-weeklyNet').textContent       = fmt(sWeeklyNet);
+  document.getElementById('s-annualNet').textContent       = fmt(sAnnualNet);
+
+  // Comparison bar — commission as % of suite earnings
+  const maxAnnual = Math.max(cAnnualNet, sAnnualNet, 1);
+  const barPct    = Math.min(Math.round((cAnnualNet / sAnnualNet) * 100), 100);
+  const diff      = sAnnualNet - cAnnualNet;
+
+  document.getElementById('bar-pct').textContent = barPct + '% of Suite';
+  document.getElementById('bar-fill').style.width = barPct + '%';
+
+  const compareTitle = document.getElementById('compare-title');
+  const compareText  = document.getElementById('compare-text');
+
+  if (diff > 0) {
+    compareTitle.textContent = 'Extra Annual Income: ' + fmt(diff);
+    compareText.textContent  = 'As a suite owner, you could keep ' + fmt(diff) + ' more per year than on commission.';
+  } else if (diff < 0) {
+    compareTitle.textContent = 'Commission Ahead by ' + fmt(Math.abs(diff));
+    compareText.textContent  = 'With your current expenses, commission may be more profitable. Try adjusting your rent or misc. costs.';
+  } else {
+    compareTitle.textContent = 'Earnings Are Equal';
+    compareText.textContent  = 'Both paths yield the same annual income with your current numbers.';
+  }
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+}
+
+// Run on load
+calculate();
+</script>
+</body>
+</html>
