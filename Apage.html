@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Profit Calculator – My Salon Suite</title>
+
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&f[]=zodiak@400,500,700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+  --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+  --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  --font-display: 'Zodiak', Georgia, serif;
+  --font-body: 'Cabinet Grotesk', 'Helvetica Neue', Arial, sans-serif;
+
+  --bg: #0d0b0a;
+  --surface: #141210;
+  --surface-2: #1b1815;
+  --surface-3: #24201b;
+  --surface-4: #2d2822;
+  --border: rgba(255,255,255,0.09);
+  --border-soft: rgba(255,255,255,0.05);
+
+  --text: #f3eee6;
+  --text-muted: #a49c8f;
+  --text-faint: #6f665b;
+  --text-inverse: #0d0b0a;
+
+  --teal: #66c7c9;
+  --teal-strong: #33b0b3;
+  --teal-dim: rgba(102,199,201,0.12);
+  --orange: #ef5a24;
+  --orange-strong: #d64a16;
+  --orange-dim: rgba(239,90,36,0.14);
+  --cream: #f4ead4;
+
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.24);
+  --shadow-md: 0 10px 28px rgba(0,0,0,0.34);
+  --shadow-lg: 0 18px 60px rgba(0,0,0,0.45);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top center, rgba(239,90,36,0.08), transparent 32%),
+    linear-gradient(180deg, #0f0d0c 0%, #0d0b0a 100%);
+}
+
+img, svg { display: block; max-width: 100%; height: auto; }
+input, button { font: inherit; color: inherit; }
+button { border: none; background: none; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+
+.site-shell { width: 100%; }
+
+/* ── Header ── */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(14px);
+  background: rgba(13,11,10,0.88);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.topbar {
+  max-width: 1180px; margin: 0 auto; padding: 1rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+
+.brand { display: inline-flex; align-items: center; gap: 0.85rem; }
+
+.brand-mark {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--orange), #ff875f);
+  display: grid; place-items: center; box-shadow: var(--shadow-sm); flex-shrink: 0;
+}
+
+.brand-mark span {
+  font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: white; line-height: 1;
+}
+
+.brand-copy { line-height: 0.95; }
+.brand-copy .brand-my { font-family: var(--font-display); font-size: 1.45rem; color: var(--cream); letter-spacing: -0.03em; }
+.brand-copy .brand-my em { color: var(--orange); font-style: normal; }
+.brand-copy .brand-sub { margin-top: 0.2rem; font-size: 0.74rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; color: var(--teal); }
+
+.header-actions { display: flex; align-items: center; gap: 0.75rem; }
+
+.icon-btn {
+  width: 42px; height: 42px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--surface-2); display: grid; place-items: center; color: var(--text);
+  transition: transform var(--transition), background var(--transition), border-color var(--transition);
+}
+.icon-btn:hover { background: var(--surface-3); border-color: rgba(102,199,201,0.35); transform: translateY(-1px); }
+
+.nav-strip { display: grid; grid-template-columns: 1fr 1fr; background: var(--teal); }
+.nav-strip a {
+  min-height: 72px; display: grid; place-items: center; text-align: center;
+  color: #0f1212; padding: 0.85rem 1rem; font-weight: 800; letter-spacing: -0.01em;
+  transition: background var(--transition);
+}
+.nav-strip a:first-child { border-right: 1px solid rgba(0,0,0,0.16); }
+.nav-strip a:hover { background: #56babb; }
+.nav-strip a small { display: block; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.72; margin-bottom: 0.15rem; }
+
+/* ── Hero ── */
+.hero-band { background: var(--orange); padding: 1.75rem 1rem 1.15rem; text-align: center; }
+.hero-band h1 {
+  font-family: var(--font-display); font-size: clamp(2.2rem, 1.1rem + 4vw, 4.5rem);
+  line-height: 0.95; color: #180f0b; letter-spacing: -0.03em;
+}
+.hero-sub {
+  background: var(--cream); color: #17120e; text-align: center;
+  padding: 1rem 1.25rem; font-size: var(--text-base); font-weight: 700;
+}
+
+/* ── Main ── */
+.main-wrap {
+  max-width: 1180px; margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem) 1rem 0;
+}
+
+.calculator-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.form-stack { display: grid; gap: 1.25rem; }
+
+.panel-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 100%), var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm); overflow: hidden;
+}
+
+.card-head {
+  padding: 1.4rem 1.4rem 0.8rem;
+  display: flex; align-items: start; gap: 0.9rem;
+}
+.card-head-icon {
+  min-width: 2.4rem; height: 2.4rem; border-radius: 999px;
+  display: grid; place-items: center; font-size: 1rem; flex-shrink: 0;
+}
+.card-head-icon.commission { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(239,90,36,0.25); }
+.card-head-icon.suite { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(102,199,201,0.22); }
+
+.card-head h2 { font-family: var(--font-display); font-size: var(--text-xl); color: var(--cream); line-height: 1.05; margin-bottom: 0.2rem; }
+.card-head p { color: var(--text-muted); font-size: var(--text-sm); }
+.card-body { padding: 0 1.4rem 1.4rem; }
+
+/* ── Fields ── */
+.fields-stack { display: grid; gap: 1rem; }
+.field-group { display: grid; gap: 0.45rem; }
+.field-group label { font-size: 0.76rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--text-muted); font-weight: 800; }
+.input-wrap { position: relative; }
+.input-prefix, .input-suffix {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  color: var(--text-faint); font-weight: 700; pointer-events: none;
+}
+.input-prefix { left: 0.95rem; }
+.input-suffix { right: 0.95rem; }
+.field-group input {
+  width: 100%; min-height: 54px; background: #120f0d; border: 1px solid var(--border);
+  border-radius: 0.95rem; color: var(--text); padding: 0.95rem 1rem; font-size: 1rem;
+  font-weight: 600; transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+.field-group input::placeholder { color: var(--text-faint); font-weight: 500; }
+.field-group input.has-prefix { padding-left: 2rem; }
+.field-group input.has-suffix { padding-right: 2.2rem; }
+.field-group input:focus {
+  border-color: rgba(102,199,201,0.5);
+  box-shadow: 0 0 0 3px rgba(102,199,201,0.12);
+  background: #15110f; outline: none;
+}
+
+/* ── Results panel ── */
+.result-column { display: grid; gap: 1rem; position: sticky; top: 120px; }
+
+.result-card {
+  background: linear-gradient(180deg, rgba(102,199,201,0.06), rgba(255,255,255,0.01)), var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-2xl);
+  padding: 1.35rem; box-shadow: var(--shadow-sm);
+}
+.result-card-title { font-family: var(--font-display); font-size: 1.5rem; color: var(--cream); line-height: 1; margin-bottom: 0.25rem; }
+.result-card .result-sub { color: var(--text-muted); font-size: var(--text-sm); margin-bottom: 1.25rem; }
+.result-section { margin-bottom: 1.25rem; }
+.result-section-title {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em;
+  font-weight: 800; color: var(--text-faint); margin-bottom: 0.7rem;
+  padding-bottom: 0.4rem; border-bottom: 1px solid var(--border-soft);
+}
+.result-line { display: flex; justify-content: space-between; align-items: baseline; padding: 0.38rem 0; gap: 0.5rem; }
+.result-line-label { font-size: var(--text-sm); color: var(--text-muted); }
+.result-line-value { font-family: var(--font-display); font-size: 1.05rem; color: var(--cream); white-space: nowrap; }
+.result-line-value.is-placeholder { color: var(--text-faint); font-size: 0.95rem; }
+.result-line.sub-total { border-top: 1px solid var(--border-soft); margin-top: 0.3rem; padding-top: 0.6rem; }
+.result-line.sub-total .result-line-value { color: var(--teal); }
+.result-line.sub-total .result-line-value.is-placeholder { color: var(--text-faint); }
+
+.annual-block {
+  background: linear-gradient(135deg, rgba(102,199,201,0.16), rgba(239,90,36,0.10));
+  border: 1px solid rgba(102,199,201,0.2); border-radius: 1rem; padding: 1rem 1.1rem; margin-top: 0.5rem;
+}
+.annual-block .annual-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 800; color: var(--text-muted); margin-bottom: 0.2rem; }
+.annual-block .annual-value { font-family: var(--font-display); font-size: clamp(2rem, 1.4rem + 1.5vw, 2.8rem); color: white; line-height: 1; }
+.annual-block .annual-value.is-placeholder { color: var(--text-faint); font-size: 2rem; }
+
+.compare-block { margin-top: 1rem; padding: 1rem; border-radius: 1rem; background: rgba(239,90,36,0.08); border: 1px solid rgba(239,90,36,0.18); }
+.compare-block strong { display: block; color: var(--orange); font-size: var(--text-sm); margin-bottom: 0.2rem; }
+.compare-block p { color: var(--text-muted); font-size: var(--text-sm); }
+
+.bar-panel { margin-top: 1rem; }
+.bar-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; }
+.bar-head span { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800; color: var(--text-muted); }
+.bar-head strong { font-family: var(--font-display); color: var(--teal); font-size: 1.25rem; }
+.bar-track { width: 100%; height: 12px; border-radius: 999px; background: var(--surface-3); overflow: hidden; }
+.bar-fill { width: 0%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--teal), var(--orange)); transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+
+.results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+/* ── Calculator Action Bar (below calculator) ── */
+.calc-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding: 1.1rem 1.4rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.calc-action-bar .bar-hint {
+  margin-right: auto;
+  color: var(--text-faint);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+.action-btn {
+  height: 44px; padding: 0 1.25rem; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--surface-2); display: inline-flex; align-items: center; gap: 0.5rem;
+  color: var(--text); font-size: 0.82rem; font-weight: 800; letter-spacing: 0.06em;
+  text-transform: uppercase; white-space: nowrap;
+  transition: transform var(--transition), background var(--transition), border-color var(--transition), color var(--transition);
+}
+.action-btn:hover { transform: translateY(-1px); }
+.action-btn.print-btn:hover { background: var(--teal-dim); border-color: rgba(102,199,201,0.45); color: var(--teal); }
+.action-btn.reset-btn:hover { background: var(--orange-dim); border-color: rgba(239,90,36,0.4); color: var(--orange); }
+.action-btn svg { flex-shrink: 0; }
+
+.disclaimer {
+  max-width: 880px; margin: 1rem auto 0; padding: 0 1rem;
+  text-align: center; color: var(--text-faint); font-size: 0.78rem;
+}
+
+/* ════════════════════════════════════════════
+   LANDING SECTIONS
+════════════════════════════════════════════ */
+
+/* ── Section: Why Suite Ownership ── */
+.why-section {
+  padding: clamp(4rem, 8vw, 7rem) 1rem;
+  background: linear-gradient(180deg, #0d0b0a 0%, #0f0e0c 100%);
+  position: relative; overflow: hidden;
+}
+
+.why-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(102,199,201,0.07), transparent 60%);
+  pointer-events: none;
+}
+
+.section-inner { max-width: 1180px; margin: 0 auto; position: relative; }
+
+.section-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+  font-weight: 800; color: var(--teal); margin-bottom: 0.9rem;
+  padding: 0.3rem 0.85rem; background: var(--teal-dim);
+  border: 1px solid rgba(102,199,201,0.2); border-radius: 999px;
+}
+
+.section-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 1.4rem + 2.5vw, 4rem);
+  line-height: 0.97; letter-spacing: -0.03em;
+  color: var(--cream); margin-bottom: 1.25rem;
+}
+
+.section-heading em { color: var(--orange); font-style: normal; }
+
+.section-lead {
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.2rem);
+  color: var(--text-muted); max-width: 560px; margin-bottom: 3.5rem;
+  line-height: 1.65;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.why-card {
+  background: linear-gradient(160deg, rgba(255,255,255,0.025), transparent), var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-2xl);
+  padding: 1.75rem 1.5rem;
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.why-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(102,199,201,0.22);
+  box-shadow: var(--shadow-md);
+}
+
+.why-card-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: grid; place-items: center; font-size: 1.5rem;
+  margin-bottom: 1.1rem;
+}
+
+.why-card-icon.orange { background: var(--orange-dim); border: 1px solid rgba(239,90,36,0.22); }
+.why-card-icon.teal   { background: var(--teal-dim);   border: 1px solid rgba(102,199,201,0.2); }
+.why-card-icon.cream  { background: rgba(244,234,212,0.08); border: 1px solid rgba(244,234,212,0.14); }
+
+.why-card h3 {
+  font-family: var(--font-display); font-size: 1.45rem; color: var(--cream);
+  line-height: 1.05; margin-bottom: 0.6rem;
+}
+
+.why-card p { color: var(--text-muted); font-size: var(--text-sm); line-height: 1.6; }
+
+.why-stat {
+  margin-top: 1.1rem; padding-top: 1rem;
+  border-top: 1px solid var(--border-soft);
+  display: flex; align-items: baseline; gap: 0.4rem;
+}
+
+.why-stat .stat-num {
+  font-family: var(--font-display); font-size: 2rem; color: var(--teal); line-height: 1;
+}
+
+.why-stat .stat-label { font-size: 0.8rem; color: var(--text-faint); font-weight: 700; }
+
+/* ── Section: How It Works / Steps ── */
+.steps-section {
+  padding: clamp(4rem, 8vw, 7rem) 1rem;
+  background: linear-gradient(180deg, #100e0c 0%, #0d0b0a 100%);
+  border-top: 1px solid var(--border-soft);
+  position: relative; overflow: hidden;
+}
+
+.steps-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 20% 60%, rgba(239,90,36,0.07), transparent 55%);
+  pointer-events: none;
+}
+
+.steps-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+
+.steps-copy { position: relative; }
+
+.steps-list { display: grid; gap: 0; margin-top: 2rem; }
+
+.step-item {
+  display: flex; gap: 1.25rem; align-items: flex-start;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--border-soft);
+  transition: background var(--transition);
+}
+
+.step-item:last-child { border-bottom: none; }
+
+.step-num {
+  min-width: 2.6rem; height: 2.6rem; border-radius: 999px; flex-shrink: 0;
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-size: 1.1rem; font-weight: 700;
+  color: var(--orange); background: var(--orange-dim);
+  border: 1px solid rgba(239,90,36,0.28);
+}
+
+.step-text h4 {
+  font-family: var(--font-display); font-size: 1.25rem; color: var(--cream);
+  margin-bottom: 0.25rem; line-height: 1.1;
+}
+
+.step-text p { color: var(--text-muted); font-size: var(--text-sm); line-height: 1.6; }
+
+/* Testimonial / quote card on the right */
+.steps-visual { position: relative; }
+
+.testimonial-stack { display: grid; gap: 1rem; }
+
+.testimonial-card {
+  background: linear-gradient(160deg, rgba(255,255,255,0.025), transparent), var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-2xl);
+  padding: 1.5rem 1.5rem 1.35rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition);
+}
+
+.testimonial-card:hover { transform: translateY(-3px); }
+
+.tc-quote {
+  font-size: clamp(0.95rem, 0.85rem + 0.3vw, 1.05rem);
+  color: var(--cream); line-height: 1.65; margin-bottom: 1.1rem;
+  font-style: italic;
+}
+
+.tc-quote::before { content: '\201C'; color: var(--orange); font-size: 1.5rem; line-height: 0; vertical-align: -0.35rem; margin-right: 0.15rem; }
+.tc-quote::after  { content: '\201D'; color: var(--orange); font-size: 1.5rem; line-height: 0; vertical-align: -0.35rem; margin-left: 0.15rem; }
+
+.tc-author { display: flex; align-items: center; gap: 0.75rem; }
+
+.tc-avatar {
+  width: 42px; height: 42px; border-radius: 999px; flex-shrink: 0;
+  display: grid; place-items: center; font-size: 1.1rem;
+  border: 2px solid var(--border);
+}
+
+.tc-avatar.a1 { background: linear-gradient(135deg, #ef5a24, #ff875f); }
+.tc-avatar.a2 { background: linear-gradient(135deg, #33b0b3, #66c7c9); }
+.tc-avatar.a3 { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+
+.tc-name { font-weight: 800; color: var(--cream); font-size: 0.9rem; }
+.tc-role { font-size: 0.76rem; color: var(--text-faint); }
+
+.tc-stars { color: var(--orange); font-size: 0.85rem; letter-spacing: 0.05em; margin-bottom: 0.6rem; }
+
+/* CTA Banner */
+.cta-band {
+  background: var(--orange);
+  padding: clamp(3rem, 6vw, 5rem) 1rem;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+
+.cta-band::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.12), transparent 60%);
+  pointer-events: none;
+}
+
+.cta-band h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.2rem + 3vw, 4rem);
+  color: #180f0b; line-height: 0.95; letter-spacing: -0.03em;
+  margin-bottom: 0.9rem; position: relative;
+}
+
+.cta-band p {
+  color: rgba(24,15,11,0.75); font-size: clamp(1rem, 0.9rem + 0.4vw, 1.2rem);
+  max-width: 520px; margin: 0 auto 2rem; position: relative;
+}
+
+.cta-btns { display: flex; justify-content: center; gap: 0.85rem; flex-wrap: wrap; position: relative; }
+
+.cta-primary {
+  height: 54px; padding: 0 2rem; border-radius: 999px;
+  background: #180f0b; color: var(--cream);
+  font-weight: 800; font-size: 0.9rem; letter-spacing: 0.05em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  transition: transform var(--transition), box-shadow var(--transition);
+  box-shadow: 0 4px 20px rgba(24,15,11,0.3);
+}
+
+.cta-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(24,15,11,0.42); }
+
+.cta-secondary {
+  height: 54px; padding: 0 1.75rem; border-radius: 999px;
+  background: transparent; color: #180f0b;
+  font-weight: 800; font-size: 0.9rem; letter-spacing: 0.05em; text-transform: uppercase;
+  border: 2px solid rgba(24,15,11,0.35);
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.cta-secondary:hover { border-color: #180f0b; background: rgba(24,15,11,0.08); }
+
+/* ── Footer ── */
+.footer { background: #080707; border-top: 1px solid var(--border-soft); }
+
+.footer-top { max-width: 1180px; margin: 0 auto; padding: 2rem 1rem 1.2rem; text-align: center; }
+
+.footer-creative { margin-bottom: 1rem; }
+.footer-creative .line-1 { background: var(--orange); color: #120c09; padding: 0.4rem 1rem; font-family: var(--font-display); font-size: clamp(1.8rem, 0.9rem + 2.4vw, 2.8rem); line-height: 0.95; }
+.footer-creative .line-2 { background: var(--cream); color: #0f0b08; padding: 0.35rem 1rem 0.5rem; font-family: var(--font-display); font-size: clamp(1.8rem, 0.9rem + 2.4vw, 2.8rem); line-height: 0.95; }
+
+.social-row { display: flex; justify-content: center; gap: 0.85rem; margin: 1.5rem 0 1.25rem; }
+.social-icon { width: 46px; height: 46px; border: 1px solid rgba(102,199,201,0.35); border-radius: 999px; display: grid; place-items: center; color: var(--teal); transition: border-color var(--transition), background var(--transition); }
+.social-icon:hover { background: var(--teal-dim); border-color: var(--teal); }
+
+.footer-links { display: grid; gap: 0.5rem; margin-bottom: 1.5rem; }
+.footer-links a { color: #f07b4b; font-size: 1.05rem; }
+.footer-links a:hover { color: var(--teal); }
+
+.footer-bottom { max-width: 1180px; margin: 0 auto; padding: 0 1rem 2rem; text-align: center; color: var(--text-muted); font-size: 0.94rem; }
+.footer-bottom .mini-links { margin-top: 0.8rem; color: var(--text-faint); }
+.footer-bottom .mini-links a:hover { color: var(--teal); }
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  .why-grid { grid-template-columns: 1fr 1fr; }
+  .steps-layout { grid-template-columns: 1fr; }
+  .steps-visual { display: grid; grid-template-columns: 1fr 1fr; }
+  .testimonial-stack { grid-template-columns: 1fr 1fr; display: contents; }
+}
+
+@media (max-width: 900px) {
+  .calculator-panel { grid-template-columns: 1fr; }
+  .result-column { position: static; top: auto; }
+  .results-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 680px) {
+  .why-grid { grid-template-columns: 1fr; }
+  .steps-visual { display: block; }
+}
+
+@media (max-width: 600px) {
+  .nav-strip a { min-height: 64px; font-size: 0.95rem; }
+  .hero-sub { font-size: 0.95rem; }
+  .topbar { padding: 0.85rem 1rem; }
+  .brand-mark { width: 42px; height: 42px; }
+  .brand-copy .brand-my { font-size: 1.25rem; }
+  .card-head, .card-body, .result-card { padding-left: 1rem; padding-right: 1rem; }
+  .card-body { padding-bottom: 1rem; }
+  .calc-action-bar { flex-direction: column; align-items: stretch; }
+  .calc-action-bar .bar-hint { margin-right: 0; text-align: center; }
+  .action-btn { justify-content: center; }
+}
+
+/* ── Print ── */
+.print-header, .print-disclaimer { display: none; }
+
+@media print {
+  :root {
+    --bg: #ffffff; --surface: #f9f9f9; --surface-2: #f2f2f2;
+    --border: rgba(0,0,0,0.12); --text: #1a1612; --text-muted: #5a534a;
+    --text-faint: #9a9186; --teal: #1a9ea1; --orange: #c84a16;
+  }
+  body { background: #fff !important; color: #1a1612 !important; }
+  .site-header, .nav-strip, .hero-band, .hero-sub, .footer,
+  .why-section, .steps-section, .cta-band,
+  .bar-track, .disclaimer, .calc-action-bar { display: none !important; }
+
+  .print-header {
+    display: flex !important; align-items: center; justify-content: space-between;
+    border-bottom: 2px solid #ef5a24; padding-bottom: 0.6rem; margin-bottom: 1.25rem;
+  }
+  .print-header .ph-brand { font-family: var(--font-display); font-size: 1.5rem; color: #ef5a24; font-weight: 700; }
+  .print-header .ph-title { font-size: 0.85rem; color: #5a534a; text-align: right; }
+  .main-wrap { padding: 0 !important; max-width: 100% !important; }
+  .calculator-panel { grid-template-columns: 1fr 1fr !important; gap: 1rem !important; }
+  .form-stack, .result-column { position: static !important; }
+  .panel-card, .result-card { border: 1px solid #ddd !important; box-shadow: none !important; background: #f9f9f9 !important; border-radius: 0.5rem !important; break-inside: avoid; }
+  .results-grid { grid-template-columns: 1fr 1fr !important; }
+  .annual-block { background: #eef9f9 !important; border: 1px solid #aadfe0 !important; }
+  .compare-block { background: #fff4ef !important; border: 1px solid #f5b89a !important; }
+  .print-disclaimer { display: block !important; margin-top: 1.25rem; font-size: 0.72rem; color: #9a9186; text-align: center; border-top: 1px solid #ddd; padding-top: 0.5rem; }
+  @page { margin: 1.5cm; size: A4 landscape; }
+}
+
+/* ════════════════════════════════════════════
+   HERO — Full Landing Section
+════════════════════════════════════════════ */
+.hero-full {
+  position: relative;
+  min-height: clamp(560px, 85vh, 820px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(4rem, 10vw, 7rem) 1.25rem clamp(5rem, 12vw, 9rem);
+  background:
+    radial-gradient(ellipse at 60% 40%, rgba(239,90,36,0.18), transparent 55%),
+    radial-gradient(ellipse at 10% 70%, rgba(102,199,201,0.1), transparent 50%),
+    linear-gradient(160deg, #0f0d0c 0%, #0d0b0a 100%);
+}
+
+.hero-inner {
+  position: relative; z-index: 2;
+  max-width: 1180px; margin: 0 auto; width: 100%;
+}
+
+/* Badge */
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--teal); background: var(--teal-dim);
+  border: 1px solid rgba(102,199,201,0.25); border-radius: 999px;
+  padding: 0.35rem 0.95rem; margin-bottom: 1.75rem;
+}
+
+.badge-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 0 3px rgba(102,199,201,0.25);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(102,199,201,0.25); }
+  50%       { box-shadow: 0 0 0 6px rgba(102,199,201,0.08); }
+}
+
+/* Heading */
+.hero-heading {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 2rem + 5vw, 7.5rem);
+  line-height: 0.92; letter-spacing: -0.04em;
+  color: var(--cream);
+  margin-bottom: 1.5rem;
+  max-width: 640px;
+}
+
+.hero-heading em {
+  font-style: normal;
+  color: var(--orange);
+  position: relative;
+  display: inline-block;
+}
+
+/* Underline accent on "bigger cut." */
+.hero-heading em::after {
+  content: '';
+  position: absolute; left: 0; bottom: -4px;
+  width: 100%; height: 4px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--orange), #ff875f);
+  opacity: 0.7;
+}
+
+/* Body copy */
+.hero-body {
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+  color: var(--text-muted); max-width: 520px;
+  line-height: 1.7; margin-bottom: 2.25rem;
+}
+
+/* CTA row */
+.hero-actions {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0.85rem;
+  margin-bottom: 3rem;
+}
+
+.hero-cta-primary {
+  height: 56px; padding: 0 1.85rem; border-radius: 999px;
+  background: var(--orange); color: #fff;
+  font-weight: 800; font-size: 0.88rem; letter-spacing: 0.06em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  box-shadow: 0 6px 24px rgba(239,90,36,0.38);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.hero-cta-primary:hover {
+  background: var(--orange-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(239,90,36,0.5);
+}
+
+.hero-cta-ghost {
+  height: 56px; padding: 0 1.6rem; border-radius: 999px;
+  background: transparent; color: var(--text-muted);
+  font-weight: 800; font-size: 0.88rem; letter-spacing: 0.06em; text-transform: uppercase;
+  border: 1px solid var(--border);
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  transition: color var(--transition), border-color var(--transition), background var(--transition), transform var(--transition);
+}
+
+.hero-cta-ghost:hover {
+  color: var(--cream); border-color: rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.04); transform: translateY(-2px);
+}
+
+/* Stats row */
+.hero-stats {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0;
+}
+
+.hero-stat {
+  display: flex; flex-direction: column; gap: 0.2rem;
+  padding: 0 1.75rem 0 0;
+}
+
+.hero-stat:first-child { padding-left: 0; }
+
+.hs-num {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 1.2rem + 1vw, 2.2rem);
+  color: var(--cream); line-height: 1;
+}
+
+.hs-label {
+  font-size: 0.75rem; color: var(--text-faint);
+  font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+.hero-stat-divider {
+  width: 1px; height: 2.5rem; background: var(--border);
+  margin-right: 1.75rem; flex-shrink: 0;
+}
+
+/* ── Floating accent cards ── */
+.hero-float {
+  position: absolute; z-index: 3;
+  background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01));
+  border: 1px solid var(--border);
+  border-radius: 1.1rem;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+}
+
+.hero-float-1 {
+  right: clamp(1rem, 5vw, 8%);
+  top: 50%;
+  transform: translateY(-60%) rotate(-2deg);
+  padding: 1.2rem 1.4rem;
+  min-width: 200px;
+  animation: float-a 5s ease-in-out infinite;
+}
+
+.float-label {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em;
+  font-weight: 800; color: var(--text-faint); margin-bottom: 0.3rem;
+}
+
+.float-value {
+  font-family: var(--font-display); font-size: 2.4rem; color: var(--teal); line-height: 1;
+}
+
+.float-sub {
+  font-size: 0.76rem; color: var(--text-muted); margin-top: 0.25rem;
+}
+
+.hero-float-2 {
+  right: clamp(1rem, 5vw, 8%);
+  top: calc(50% + 160px);
+  transform: rotate(1.5deg);
+  padding: 0.85rem 1.1rem;
+  display: flex; align-items: center; gap: 0.65rem;
+  animation: float-b 6s ease-in-out infinite;
+}
+
+.float-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--orange-dim); border: 1px solid rgba(239,90,36,0.25);
+  display: grid; place-items: center; font-size: 1.1rem;
+}
+
+.float-tag {
+  font-size: 0.82rem; font-weight: 800; color: var(--cream);
+  white-space: nowrap;
+}
+
+@keyframes float-a {
+  0%, 100% { transform: translateY(-60%) rotate(-2deg); }
+  50%       { transform: translateY(-65%) rotate(-2deg); }
+}
+
+@keyframes float-b {
+  0%, 100% { transform: rotate(1.5deg) translateY(0); }
+  50%       { transform: rotate(1.5deg) translateY(-8px); }
+}
+
+/* ── Decorative blobs ── */
+.hero-blob {
+  position: absolute; border-radius: 50%; pointer-events: none; z-index: 1;
+  filter: blur(80px); opacity: 0.55;
+}
+
+.hero-blob-1 {
+  width: 520px; height: 520px;
+  background: radial-gradient(circle, rgba(239,90,36,0.22), transparent 70%);
+  right: -80px; top: -60px;
+}
+
+.hero-blob-2 {
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(102,199,201,0.15), transparent 70%);
+  left: -60px; bottom: -40px;
+}
+
+.hero-blob-3 {
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(244,234,212,0.06), transparent 70%);
+  left: 35%; top: 20%;
+}
+
+/* ── Calculator intro band ── */
+.calc-intro-band {
+  display: flex; align-items: center; justify-content: center; gap: 0.65rem;
+  background: var(--orange); color: #180f0b;
+  padding: 0.9rem 1.25rem;
+  font-weight: 800; font-size: clamp(0.85rem, 0.78rem + 0.3vw, 1rem);
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+/* ── Hide floats on small screens ── */
+@media (max-width: 860px) {
+  .hero-float { display: none; }
+  .hero-full { min-height: auto; padding-bottom: 4rem; }
+}
+
+@media (max-width: 480px) {
+  .hero-stats { gap: 1rem; flex-direction: column; align-items: flex-start; }
+  .hero-stat-divider { display: none; }
+  .hero-stat { padding: 0; }
+}
+
+
+</style>
+</head>
+<body>
+<div class="site-shell">
+
+  <!-- Print-only header -->
+  <div class="print-header" id="printHeader">
+    <div class="ph-brand">My Salon Suite® — Profit Calculator</div>
+    <div class="ph-title" id="printTimestamp"></div>
+  </div>
+
+  <!-- ════ HEADER ════ -->
+  <header class="site-header">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-mark"><span>m</span></div>
+        <div class="brand-copy">
+          <div class="brand-my">m<em>y</em></div>
+          <div class="brand-sub">salon suite</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" aria-label="Toggle theme" onclick="toggleTheme()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3A7 7 0 0 0 21 12.79Z"></path>
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="Open menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="nav-strip">
+      <a href="#"><span><small>Clients</small>book my service</span></a>
+      <a href="#"><span><small>Professionals</small>request suite info</span></a>
+    </div>
+  </header>
+
+  <!-- ════ HERO ════ -->
+  <section class="hero-full">
+    <div class="hero-inner">
+
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Trusted by 5,000+ beauty professionals
+      </div>
+
+      <h1 class="hero-heading">
+        Your talent<br>
+        deserves a<br>
+        <em>bigger cut.</em>
+      </h1>
+
+      <p class="hero-body">
+        Stop handing 50–60% of your revenue to a salon owner. My Salon Suite gives you a private, fully-equipped suite — and lets you keep every dollar you earn.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#" class="hero-cta-primary">
+          Request Suite Info
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#calculator" class="hero-cta-ghost">
+          See the Calculator
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hs-num">$0</span>
+          <span class="hs-label">Commission taken</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="hs-num">700+</span>
+          <span class="hs-label">Locations nationwide</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="hs-num">3–5×</span>
+          <span class="hs-label">More take-home income</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating accent cards -->
+    <div class="hero-float hero-float-1" aria-hidden="true">
+      <div class="float-label">Weekly Net (Suite)</div>
+      <div class="float-value">$4,100</div>
+      <div class="float-sub">vs. $620 on commission</div>
+    </div>
+
+    <div class="hero-float hero-float-2" aria-hidden="true">
+      <div class="float-icon">✂</div>
+      <div class="float-tag">Now booking suites</div>
+    </div>
+
+    <!-- Decorative blobs -->
+    <div class="hero-blob hero-blob-1" aria-hidden="true"></div>
+    <div class="hero-blob hero-blob-2" aria-hidden="true"></div>
+    <div class="hero-blob hero-blob-3" aria-hidden="true"></div>
+  </section>
+
+  <!-- Calculator section intro band -->
+  <div class="calc-intro-band" id="calculator">
+    <span>See the savings — enter your numbers below</span>
+  </div>
+
+
+
+  <!-- ════ CALCULATOR ════ -->
+  <main class="main-wrap">
+    <div class="calculator-panel">
+
+      <!-- LEFT: Inputs -->
+      <section class="form-stack">
+
+        <div class="panel-card">
+          <div class="card-head">
+            <div class="card-head-icon commission">✂</div>
+            <div>
+              <h2>Commission Earnings</h2>
+              <p>Enter your current numbers as a commission-based stylist.</p>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="fields-stack">
+
+              <div class="field-group">
+                <label for="grossRevenue">Gross Weekly Service Revenue</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="grossRevenue" class="has-prefix" placeholder="e.g. 6,000" min="0" oninput="calculate()">
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="commissionPct">Your % Commission on Service Revenue</label>
+                <div class="input-wrap">
+                  <input type="number" id="commissionPct" class="has-suffix" placeholder="e.g. 45" min="0" max="100" oninput="calculate()">
+                  <span class="input-suffix">%</span>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="weeklyProductSales">Weekly Product Sales</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="weeklyProductSales" class="has-prefix" placeholder="e.g. 200" min="0" oninput="calculate()">
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="productCommissionPct">Your % Commission on Product Sales</label>
+                <div class="input-wrap">
+                  <input type="number" id="productCommissionPct" class="has-suffix" placeholder="e.g. 10" min="0" max="100" oninput="calculate()">
+                  <span class="input-suffix">%</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="card-head">
+            <div class="card-head-icon suite">◈</div>
+            <div>
+              <h2>Salon Suite Earnings</h2>
+              <p>Enter your projected expenses as a suite owner.</p>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="fields-stack">
+
+              <div class="field-group">
+                <label for="weeklyRent">Your Weekly Rent</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="weeklyRent" class="has-prefix" placeholder="e.g. 700" min="0" oninput="calculate()">
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="weeklyMisc">Your Weekly Misc. Expenses</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="weeklyMisc" class="has-prefix" placeholder="e.g. 300" min="0" oninput="calculate()">
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT: Results -->
+      <aside class="result-column">
+
+        <div class="results-grid">
+
+          <div class="result-card">
+            <div class="result-card-title">Commission</div>
+            <div class="result-sub">Your take-home as an employee</div>
+            <div class="result-section">
+              <div class="result-section-title">Weekly Breakdown</div>
+              <div class="result-line">
+                <span class="result-line-label">Service Revenue Earnings</span>
+                <span class="result-line-value is-placeholder" id="c-serviceEarnings">—</span>
+              </div>
+              <div class="result-line">
+                <span class="result-line-label">Amount Kept by Salon</span>
+                <span class="result-line-value is-placeholder" id="c-salonKeeps">—</span>
+              </div>
+              <div class="result-line">
+                <span class="result-line-label">Product Sales Earnings</span>
+                <span class="result-line-value is-placeholder" id="c-productEarnings">—</span>
+              </div>
+              <div class="result-line sub-total">
+                <span class="result-line-label">Weekly Net Income</span>
+                <span class="result-line-value is-placeholder" id="c-weeklyNet">—</span>
+              </div>
+            </div>
+            <div class="annual-block">
+              <div class="annual-label">Your Net Annual Income</div>
+              <div class="annual-value is-placeholder" id="c-annualNet">—</div>
+            </div>
+          </div>
+
+          <div class="result-card">
+            <div class="result-card-title">Salon Suite</div>
+            <div class="result-sub">Your take-home as a suite owner</div>
+            <div class="result-section">
+              <div class="result-section-title">Weekly Breakdown</div>
+              <div class="result-line">
+                <span class="result-line-label">Service Revenue Earnings</span>
+                <span class="result-line-value is-placeholder" id="s-serviceEarnings">—</span>
+              </div>
+              <div class="result-line">
+                <span class="result-line-label">Product Sales Earnings <small style="opacity:0.6">(50%)</small></span>
+                <span class="result-line-value is-placeholder" id="s-productEarnings">—</span>
+              </div>
+              <div class="result-line">
+                <span class="result-line-label">Weekly Rent</span>
+                <span class="result-line-value is-placeholder" id="s-rent">—</span>
+              </div>
+              <div class="result-line">
+                <span class="result-line-label">Misc. Expenses</span>
+                <span class="result-line-value is-placeholder" id="s-misc">—</span>
+              </div>
+              <div class="result-line sub-total">
+                <span class="result-line-label">Weekly Net Income</span>
+                <span class="result-line-value is-placeholder" id="s-weeklyNet">—</span>
+              </div>
+            </div>
+            <div class="annual-block">
+              <div class="annual-label">Your Net Annual Income</div>
+              <div class="annual-value is-placeholder" id="s-annualNet">—</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="result-card">
+          <div class="result-card-title">You Could Earn More</div>
+          <div class="result-sub">Annual difference between suite ownership vs. commission</div>
+          <div class="bar-panel">
+            <div class="bar-head">
+              <span>Commission</span>
+              <strong id="bar-pct" style="color:var(--text-faint);font-size:1rem;">Enter values above</strong>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" id="bar-fill"></div>
+            </div>
+          </div>
+          <div class="compare-block" style="margin-top:1rem;">
+            <strong id="compare-title">Awaiting Your Numbers</strong>
+            <p id="compare-text">Fill in the fields on the left to see your personalised earnings comparison.</p>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- ── Action Bar (below calculator) ── -->
+    <div class="calc-action-bar">
+      <span class="bar-hint">* Results are illustrative. Actual earnings may vary.</span>
+
+      <button class="action-btn reset-btn" onclick="resetCalculator()" aria-label="Reset calculator">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <polyline points="1 4 1 10 7 10"></polyline>
+          <path d="M3.51 15a9 9 0 1 0 .49-3.5"></path>
+        </svg>
+        Reset
+      </button>
+
+      <button class="action-btn print-btn" onclick="printPage()" aria-label="Print results">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <polyline points="6 9 6 2 18 2 18 9"></polyline>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+          <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
+        Print Results
+      </button>
+    </div>
+
+    <p class="print-disclaimer" id="printDisclaimer">
+      * This calculator is for illustrative purposes only. Actual earnings and expenses may vary.<br>
+      Salon suite product commission is assumed at 50% as industry standard. Printed from mysalonsuite.com
+    </p>
+
+  </main>
+
+  <!-- ════════════════════════════════════════════
+       LANDING SECTION 1 — Why Suite Ownership
+  ════════════════════════════════════════════ -->
+  <section class="why-section">
+    <div class="section-inner">
+
+      <div class="section-eyebrow">Why Suite Ownership</div>
+      <h2 class="section-heading">Stop splitting your<br><em>hard-earned revenue.</em></h2>
+      <p class="section-lead">Commission salons keep the majority of what you generate. As a My Salon Suite owner, every dollar you earn stays with you — minus a simple flat weekly rent.</p>
+
+      <div class="why-grid">
+
+        <div class="why-card">
+          <div class="why-card-icon orange">💰</div>
+          <h3>Keep 100% of Services</h3>
+          <p>No more splitting your service revenue. Set your own prices, build your own clientele, and pocket every dollar from every appointment.</p>
+          <div class="why-stat">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">of service revenue is yours</span>
+          </div>
+        </div>
+
+        <div class="why-card">
+          <div class="why-card-icon teal">📅</div>
+          <h3>Predictable Flat Rent</h3>
+          <p>One simple weekly rent covers your fully-equipped private suite. No percentage cuts, no hidden fees, no surprises — just total transparency.</p>
+          <div class="why-stat">
+            <span class="stat-num">$0</span>
+            <span class="stat-label">commission taken from you</span>
+          </div>
+        </div>
+
+        <div class="why-card">
+          <div class="why-card-icon cream">📈</div>
+          <h3>Unlimited Earning Potential</h3>
+          <p>Scale your business on your terms. Add services, retail products, and build a loyal book of clients without a ceiling on what you take home.</p>
+          <div class="why-stat">
+            <span class="stat-num">3–5×</span>
+            <span class="stat-label">more income vs. commission avg.</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       LANDING SECTION 2 — How It Works + Testimonials
+  ════════════════════════════════════════════ -->
+  <section class="steps-section">
+    <div class="section-inner">
+      <div class="steps-layout">
+
+        <!-- Left: Steps -->
+        <div class="steps-copy">
+          <div class="section-eyebrow">How It Works</div>
+          <h2 class="section-heading">Three steps to<br><em>owning your future.</em></h2>
+
+          <div class="steps-list">
+
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-text">
+                <h4>Request Suite Info</h4>
+                <p>Tell us about yourself and your goals. We'll match you with available suites at a location near you and walk you through everything.</p>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-text">
+                <h4>Tour Your Suite</h4>
+                <p>Visit a fully-equipped private suite in person. See the amenities, meet the community, and picture your brand in your own space.</p>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-text">
+                <h4>Open Your Doors</h4>
+                <p>Sign your agreement, move in, and start earning on your terms — often within days. Your business, your schedule, your income.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right: Testimonials -->
+        <div class="steps-visual">
+          <div class="testimonial-stack">
+
+            <div class="testimonial-card">
+              <div class="tc-stars">★★★★★</div>
+              <p class="tc-quote">I went from taking home $620 a week on commission to clearing over $4,000 as a suite owner. I only wish I'd made the move sooner.</p>
+              <div class="tc-author">
+                <div class="tc-avatar a1">✂</div>
+                <div>
+                  <div class="tc-name">Mia Thornton</div>
+                  <div class="tc-role">Hair Stylist · Atlanta, GA</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-card">
+              <div class="tc-stars">★★★★★</div>
+              <p class="tc-quote">The calculator sold me. I plugged in my numbers and saw a $180k annual difference. Within two weeks I had signed my lease.</p>
+              <div class="tc-author">
+                <div class="tc-avatar a2">💅</div>
+                <div>
+                  <div class="tc-name">Jordan Rivera</div>
+                  <div class="tc-role">Nail Artist · Dallas, TX</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-card">
+              <div class="tc-stars">★★★★★</div>
+              <p class="tc-quote">My Salon Suite gave me a professional space, a supportive community, and complete freedom over my book. Best career decision I've ever made.</p>
+              <div class="tc-author">
+                <div class="tc-avatar a3">🪄</div>
+                <div>
+                  <div class="tc-name">Priya Anand</div>
+                  <div class="tc-role">Esthetician · Chicago, IL</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ CTA BAND ════ -->
+  <div class="cta-band">
+    <h2>Ready to own<br>your income?</h2>
+    <p>Join thousands of beauty professionals who took control of their earnings with My Salon Suite.</p>
+    <div class="cta-btns">
+      <a href="#" class="cta-primary">
+        Request Suite Info
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="#" class="cta-secondary">Find a Location</a>
+    </div>
+  </div>
+
+  <!-- ════ FOOTER ════ -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-creative">
+        <div class="line-1">own your</div>
+        <div class="line-2">business.</div>
+      </div>
+      <div class="social-row">
+        <a href="#" class="social-icon" aria-label="Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <circle cx="12" cy="12" r="4"></circle>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle>
+          </svg>
+        </a>
+        <a href="#" class="social-icon" aria-label="Facebook">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+          </svg>
+        </a>
+        <a href="#" class="social-icon" aria-label="YouTube">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"></path>
+            <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"></polygon>
+          </svg>
+        </a>
+      </div>
+      <div class="footer-links">
+        <a href="#">mysalonsuite.com</a>
+        <a href="#">Find a Location Near You</a>
+        <a href="#">Request Suite Information</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2025 My Salon Suite. All rights reserved.</div>
+      <div class="mini-links">
+        <a href="#">Privacy Policy</a> · <a href="#">Terms of Use</a>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /site-shell -->
+
+<script>
+function fmt(n) {
+  return '$' + Math.round(n).toLocaleString('en-US');
+}
+
+function val(id) {
+  const v = document.getElementById(id).value.trim();
+  return v === '' ? null : (parseFloat(v) || 0);
+}
+
+function setVal(id, text, isPlaceholder) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  isPlaceholder ? el.classList.add('is-placeholder') : el.classList.remove('is-placeholder');
+}
+
+function calculate() {
+  const grossRevenue       = val('grossRevenue');
+  const commissionPct      = val('commissionPct');
+  const weeklyProductSales = val('weeklyProductSales');
+  const productCommPct     = val('productCommissionPct');
+  const weeklyRent         = val('weeklyRent');
+  const weeklyMisc         = val('weeklyMisc');
+
+  const hasAny = [grossRevenue, commissionPct, weeklyProductSales, productCommPct, weeklyRent, weeklyMisc]
+    .some(v => v !== null);
+
+  if (!hasAny) { showPlaceholderState(); return; }
+
+  const gr  = grossRevenue       ?? 0;
+  const cp  = (commissionPct     ?? 0) / 100;
+  const wps = weeklyProductSales ?? 0;
+  const pcp = (productCommPct    ?? 0) / 100;
+  const wr  = weeklyRent         ?? 0;
+  const wm  = weeklyMisc         ?? 0;
+
+  const cServiceEarnings = gr * cp;
+  const cSalonKeeps      = gr - cServiceEarnings;
+  const cProductEarnings = wps * pcp;
+  const cWeeklyNet       = cServiceEarnings + cProductEarnings;
+  const cAnnualNet       = cWeeklyNet * 52;
+
+  const sServiceEarnings = gr;
+  const sProductEarnings = wps * 0.50;
+  const sWeeklyNet       = sServiceEarnings + sProductEarnings - wr - wm;
+  const sAnnualNet       = sWeeklyNet * 52;
+
+  setVal('c-serviceEarnings', fmt(cServiceEarnings), false);
+  setVal('c-salonKeeps',      fmt(cSalonKeeps),      false);
+  setVal('c-productEarnings', fmt(cProductEarnings), false);
+  setVal('c-weeklyNet',       fmt(cWeeklyNet),       false);
+  setVal('c-annualNet',       fmt(cAnnualNet),       false);
+
+  setVal('s-serviceEarnings', fmt(sServiceEarnings), false);
+  setVal('s-productEarnings', fmt(sProductEarnings), false);
+  setVal('s-rent',            '−' + fmt(wr),         false);
+  setVal('s-misc',            '−' + fmt(wm),         false);
+  setVal('s-weeklyNet',       fmt(sWeeklyNet),        false);
+  setVal('s-annualNet',       fmt(sAnnualNet),        false);
+
+  const diff   = sAnnualNet - cAnnualNet;
+  const barPct = sAnnualNet > 0 ? Math.min(Math.round((cAnnualNet / sAnnualNet) * 100), 100) : 0;
+
+  const barPctEl = document.getElementById('bar-pct');
+  barPctEl.style.color = '';
+  barPctEl.style.fontSize = '';
+  barPctEl.textContent = barPct + '% of Suite';
+  document.getElementById('bar-fill').style.width = barPct + '%';
+
+  const compareTitle = document.getElementById('compare-title');
+  const compareText  = document.getElementById('compare-text');
+
+  if (diff > 0) {
+    compareTitle.textContent = 'Extra Annual Income: ' + fmt(diff);
+    compareText.textContent  = 'As a suite owner, you could keep ' + fmt(diff) + ' more per year than on commission.';
+  } else if (diff < 0) {
+    compareTitle.textContent = 'Commission Ahead by ' + fmt(Math.abs(diff));
+    compareText.textContent  = 'With your current expenses, commission may be more profitable. Try adjusting your rent or misc. costs.';
+  } else {
+    compareTitle.textContent = 'Earnings Are Equal';
+    compareText.textContent  = 'Both paths yield the same annual income with your current numbers.';
+  }
+}
+
+function showPlaceholderState() {
+  ['c-serviceEarnings','c-salonKeeps','c-productEarnings','c-weeklyNet','c-annualNet',
+   's-serviceEarnings','s-productEarnings','s-rent','s-misc','s-weeklyNet','s-annualNet']
+    .forEach(id => setVal(id, '—', true));
+
+  const barPctEl = document.getElementById('bar-pct');
+  barPctEl.textContent   = 'Enter values above';
+  barPctEl.style.color   = 'var(--text-faint)';
+  barPctEl.style.fontSize = '1rem';
+  document.getElementById('bar-fill').style.width = '0%';
+  document.getElementById('compare-title').textContent = 'Awaiting Your Numbers';
+  document.getElementById('compare-text').textContent  = 'Fill in the fields on the left to see your personalised earnings comparison.';
+}
+
+function resetCalculator() {
+  ['grossRevenue','commissionPct','weeklyProductSales','productCommissionPct','weeklyRent','weeklyMisc']
+    .forEach(id => { document.getElementById(id).value = ''; });
+  showPlaceholderState();
+}
+
+function printPage() {
+  const now   = new Date();
+  const stamp = now.toLocaleDateString('en-CA', { year:'numeric', month:'long', day:'numeric' })
+              + '  ·  '
+              + now.toLocaleTimeString('en-CA', { hour:'2-digit', minute:'2-digit' });
+  document.getElementById('printTimestamp').textContent = 'Printed: ' + stamp;
+  window.print();
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+}
+
+showPlaceholderState();
+</script>
+</body>
+</html>
