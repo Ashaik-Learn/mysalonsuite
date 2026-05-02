@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Salon Suite — Stop Paying Rent With Your Talent</title>
+
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #faf8f4;
+  --bg-dark: #0e0c09;
+  --ink: #1a1410;
+  --ink-mid: #5a5046;
+  --ink-soft: #9a9080;
+  --cream: #f4eed8;
+  --cream-dark: #e8dfc0;
+  --gold: #c4882a;
+  --gold-light: #e8a83a;
+  --gold-dim: rgba(196,136,42,0.12);
+  --rust: #c44a1a;
+  --rust-dim: rgba(196,74,26,0.12);
+  --teal: #1a8f8a;
+  --teal-light: #22b5af;
+  --teal-dim: rgba(26,143,138,0.1);
+  --green: #1f7a52;
+  --border: rgba(26,20,16,0.1);
+  --border-strong: rgba(26,20,16,0.2);
+  --shadow-sm: 0 2px 12px rgba(26,20,16,0.07);
+  --shadow-md: 0 8px 32px rgba(26,20,16,0.12);
+  --shadow-lg: 0 20px 60px rgba(26,20,16,0.18);
+  --r-sm: 0.5rem;
+  --r-md: 0.875rem;
+  --r-lg: 1.25rem;
+  --r-xl: 1.75rem;
+  --r-full: 9999px;
+  --font-head: 'DM Serif Display', Georgia, serif;
+  --font-display: 'Clash Display', 'Helvetica Neue', sans-serif;
+  --font-body: 'Satoshi', 'Helvetica Neue', sans-serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --t: 200ms var(--ease);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--bg);
+}
+img, svg { display: block; max-width: 100%; }
+button { font: inherit; cursor: pointer; border: none; background: none; }
+a { color: inherit; text-decoration: none; }
+input { font: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* ─── Noise overlay ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.site { position: relative; z-index: 1; }
+
+/* ═══════════════════════════════
+   HEADER
+═══════════════════════════════ */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,248,244,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0.9rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+
+.brand { display: flex; align-items: center; gap: 0.8rem; }
+.brand-mark {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--ink); display: grid; place-items: center;
+}
+.brand-mark svg { color: var(--cream); }
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem; font-weight: 700;
+  letter-spacing: -0.01em; line-height: 1;
+}
+.brand-name span { color: var(--gold); }
+
+.nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+
+.nav-link {
+  font-size: 0.82rem; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; color: var(--ink-mid);
+  padding: 0.45rem 0.85rem; border-radius: var(--r-full);
+  transition: color var(--t), background var(--t);
+}
+.nav-link:hover { color: var(--ink); background: rgba(26,20,16,0.06); }
+
+.nav-cta {
+  font-size: 0.82rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
+  background: var(--ink); color: var(--cream);
+  padding: 0.55rem 1.25rem; border-radius: var(--r-full);
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  transition: background var(--t), transform var(--t), box-shadow var(--t);
+  box-shadow: var(--shadow-sm);
+}
+.nav-cta:hover { background: #2a2018; transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+/* ═══════════════════════════════
+   HERO
+═══════════════════════════════ */
+.hero {
+  padding: clamp(5rem, 12vw, 9rem) 1.5rem clamp(4rem, 8vw, 6rem);
+  background:
+    radial-gradient(ellipse at 70% 0%, rgba(196,136,42,0.1), transparent 50%),
+    radial-gradient(ellipse at 5% 80%, rgba(26,143,138,0.07), transparent 45%),
+    var(--bg);
+  position: relative; overflow: hidden;
+}
+
+.hero-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+}
+
+.hero-left { position: relative; }
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--font-display); font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--rust);
+  background: var(--rust-dim); border: 1px solid rgba(196,74,26,0.18);
+  border-radius: var(--r-full); padding: 0.3rem 0.9rem; margin-bottom: 1.6rem;
+}
+
+.blink {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--rust);
+  animation: blink 1.4s ease-in-out infinite;
+}
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
+
+.hero-heading {
+  font-family: var(--font-head);
+  font-size: clamp(3rem, 2rem + 4vw, 6rem);
+  line-height: 1.0; letter-spacing: -0.02em;
+  color: var(--ink); margin-bottom: 1.5rem;
+}
+.hero-heading .accent { color: var(--gold); font-style: italic; }
+.hero-heading .cross {
+  position: relative; display: inline-block;
+  color: var(--ink-soft);
+}
+.hero-heading .cross::after {
+  content: '';
+  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  width: 100%; height: 3px;
+  background: var(--rust); border-radius: 2px;
+}
+
+.hero-body {
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.2rem);
+  color: var(--ink-mid); line-height: 1.75;
+  max-width: 460px; margin-bottom: 2.25rem;
+}
+.hero-body strong { color: var(--ink); font-weight: 700; }
+
+.hero-actions { display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+
+.btn-primary {
+  height: 60px; padding: 0 2rem; border-radius: var(--r-full);
+  background: var(--ink); color: var(--cream);
+  font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; letter-spacing: 0.04em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  box-shadow: 0 4px 20px rgba(26,20,16,0.22);
+  transition: background var(--t), transform var(--t), box-shadow var(--t);
+}
+.btn-primary:hover { background: #2a2018; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(26,20,16,0.3); }
+
+.btn-ghost {
+  height: 60px; padding: 0 1.75rem; border-radius: var(--r-full);
+  border: 1.5px solid var(--border-strong); color: var(--ink-mid);
+  font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; letter-spacing: 0.04em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  transition: color var(--t), border-color var(--t), background var(--t), transform var(--t);
+}
+.btn-ghost:hover { color: var(--ink); border-color: var(--ink); background: rgba(26,20,16,0.04); transform: translateY(-2px); }
+
+.hero-proof {
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+}
+.proof-item { display: flex; flex-direction: column; }
+.proof-num {
+  font-family: var(--font-display); font-size: 2rem; font-weight: 700;
+  color: var(--ink); line-height: 1;
+}
+.proof-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+.proof-divider { width: 1px; height: 2.2rem; background: var(--border-strong); }
+
+/* Hero right — pay-stub card */
+.hero-right { position: relative; }
+
+.paystub-card {
+  background: var(--ink);
+  border-radius: var(--r-xl);
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+  position: relative; overflow: hidden;
+  color: var(--cream);
+}
+.paystub-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 30px,
+    rgba(255,255,255,0.015) 30px,
+    rgba(255,255,255,0.015) 31px
+  );
+}
+
+.paystub-tag {
+  display: inline-block;
+  font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold-light); background: rgba(196,136,42,0.18);
+  border: 1px solid rgba(196,136,42,0.3); border-radius: var(--r-full);
+  padding: 0.25rem 0.75rem; margin-bottom: 1.25rem;
+}
+
+.paystub-title {
+  font-family: var(--font-head); font-size: 1.1rem; color: rgba(244,238,216,0.6);
+  margin-bottom: 0.5rem; font-style: italic;
+}
+
+.paystub-weeks {
+  font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(244,238,216,0.35); margin-bottom: 1.5rem;
+}
+
+.paystub-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.paystub-row:last-of-type { border-bottom: none; }
+.ps-label { font-size: 0.82rem; color: rgba(244,238,216,0.55); }
+.ps-val { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: rgba(244,238,216,0.85); }
+.ps-val.earned { color: var(--cream); }
+.ps-val.kept-by-them { color: #c06060; text-decoration: line-through; opacity: 0.8; }
+
+.paystub-divider { border: none; border-top: 1px dashed rgba(255,255,255,0.12); margin: 1rem 0; }
+
+.paystub-net {
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.pn-label {
+  font-family: var(--font-display); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.15em;
+  text-transform: uppercase; color: rgba(244,238,216,0.45);
+}
+.pn-val {
+  font-family: var(--font-head); font-size: 2.4rem; color: var(--gold-light); line-height: 1;
+}
+
+.paystub-note {
+  margin-top: 1.25rem; padding: 0.85rem 1rem;
+  background: rgba(196,136,42,0.12); border: 1px solid rgba(196,136,42,0.22);
+  border-radius: var(--r-md); font-size: 0.8rem; color: rgba(244,238,216,0.65);
+  line-height: 1.5;
+}
+.paystub-note strong { color: var(--gold-light); }
+
+/* Floating badge */
+.float-badge {
+  position: absolute; bottom: -1.5rem; left: -1.5rem;
+  background: var(--cream); color: var(--ink);
+  border-radius: var(--r-lg); padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-md);
+  animation: float-up 4s ease-in-out infinite;
+  min-width: 170px;
+}
+@keyframes float-up {
+  0%,100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-8px) rotate(-2deg); }
+}
+.fb-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.25rem; }
+.fb-val { font-family: var(--font-head); font-size: 1.75rem; color: var(--teal); line-height: 1; }
+.fb-sub { font-size: 0.72rem; color: var(--ink-mid); margin-top: 0.15rem; }
+
+/* ═══════════════════════════════
+   PROBLEM BAND
+═══════════════════════════════ */
+.problem-band {
+  background: var(--rust); color: white;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+}
+.pb-inner {
+  max-width: 1000px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;
+}
+.pb-text {
+  font-family: var(--font-display); font-size: clamp(0.88rem, 0.78rem + 0.4vw, 1rem);
+  font-weight: 700; letter-spacing: 0.02em;
+}
+.pb-num {
+  font-family: var(--font-head); font-size: 1.35rem;
+  background: rgba(255,255,255,0.15); border-radius: var(--r-full);
+  padding: 0.15rem 0.75rem; font-style: italic;
+}
+
+/* ═══════════════════════════════
+   CALCULATOR SECTION
+═══════════════════════════════ */
+.calc-section {
+  padding: clamp(4rem, 8vw, 6rem) 1.5rem;
+  background: var(--cream);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+
+.section-inner { max-width: 1200px; margin: 0 auto; }
+
+.section-label {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--font-display); font-size: 0.7rem; font-weight: 800;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.9rem;
+}
+.section-label::before {
+  content: '';
+  width: 28px; height: 1.5px; background: var(--gold);
+}
+
+.section-heading {
+  font-family: var(--font-head);
+  font-size: clamp(2.2rem, 1.4rem + 2.5vw, 3.8rem);
+  line-height: 1.05; letter-spacing: -0.02em; color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+.section-heading em { color: var(--gold); font-style: italic; }
+
+.section-subhead {
+  font-size: clamp(1rem, 0.9rem + 0.3vw, 1.15rem);
+  color: var(--ink-mid); max-width: 560px; line-height: 1.7; margin-bottom: 3rem;
+}
+
+.calc-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start;
+}
+
+.calc-card {
+  background: white;
+  border: 1px solid var(--border); border-radius: var(--r-xl);
+  box-shadow: var(--shadow-sm); overflow: hidden;
+}
+
+.cc-head {
+  padding: 1.5rem 1.5rem 0.6rem;
+  display: flex; align-items: flex-start; gap: 0.85rem; border-bottom: 1px solid var(--border);
+  margin-bottom: 1.25rem;
+}
+
+.cc-icon {
+  width: 2.6rem; height: 2.6rem; border-radius: 10px; flex-shrink: 0;
+  display: grid; place-items: center; font-size: 1.1rem;
+}
+.cc-icon.loss { background: var(--rust-dim); }
+.cc-icon.gain { background: var(--teal-dim); }
+
+.cc-head h2 {
+  font-family: var(--font-display); font-size: 1.15rem; font-weight: 700;
+  color: var(--ink); margin-bottom: 0.15rem;
+}
+.cc-head p { font-size: 0.82rem; color: var(--ink-soft); }
+
+.cc-body { padding: 0 1.5rem 1.5rem; }
+
+.fields-stack { display: grid; gap: 0.95rem; }
+
+.field { display: grid; gap: 0.4rem; }
+.field label {
+  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-mid);
+}
+
+.input-wrap { position: relative; }
+.input-wrap input {
+  width: 100%; height: 52px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: var(--r-md); padding: 0 1rem;
+  font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--ink);
+  transition: border-color var(--t), box-shadow var(--t), background var(--t);
+}
+.input-wrap input::placeholder { color: var(--ink-soft); font-weight: 500; }
+.input-wrap input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-dim); background: white; outline: none; }
+.input-wrap input.pfx { padding-left: 2rem; }
+.input-wrap input.sfx { padding-right: 2rem; }
+
+.ipfx, .isfx {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  font-weight: 700; color: var(--ink-soft); pointer-events: none; font-size: 0.95rem;
+}
+.ipfx { left: 0.9rem; }
+.isfx { right: 0.9rem; }
+
+/* Result column */
+.result-col { display: grid; gap: 1.25rem; position: sticky; top: 80px; }
+
+.result-card {
+  background: white;
+  border: 1px solid var(--border); border-radius: var(--r-xl);
+  padding: 1.5rem; box-shadow: var(--shadow-sm);
+}
+
+.rc-head {
+  margin-bottom: 1.1rem;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.rc-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+.rc-badge {
+  font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.2rem 0.65rem; border-radius: var(--r-full);
+}
+.rc-badge.loss { background: var(--rust-dim); color: var(--rust); }
+.rc-badge.gain { background: var(--teal-dim); color: var(--teal); }
+
+.result-rows { display: grid; gap: 0; }
+.result-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 0.55rem 0; border-bottom: 1px solid rgba(26,20,16,0.06);
+}
+.result-row:last-child { border-bottom: none; }
+.rr-label { font-size: 0.82rem; color: var(--ink-mid); }
+.rr-val {
+  font-family: var(--font-display); font-size: 0.95rem; font-weight: 700;
+  color: var(--ink);
+}
+.rr-val.placeholder { color: var(--ink-soft); opacity: 0.5; }
+.rr-val.total { color: var(--teal); font-size: 1.05rem; }
+
+.annual-box {
+  margin-top: 1rem; padding: 1rem 1.15rem;
+  background: linear-gradient(135deg, rgba(26,143,138,0.08), rgba(196,136,42,0.07));
+  border: 1px solid rgba(26,143,138,0.18); border-radius: var(--r-lg);
+}
+.ab-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.2rem; }
+.ab-val { font-family: var(--font-head); font-size: clamp(2rem, 1.4rem + 1.5vw, 2.8rem); color: var(--ink); line-height: 1; }
+.ab-val.placeholder { color: var(--ink-soft); font-size: 2rem; opacity: 0.4; }
+
+.compare-box {
+  margin-top: 1rem; padding: 1rem; background: var(--gold-dim);
+  border: 1px solid rgba(196,136,42,0.2); border-radius: var(--r-lg);
+}
+.cb-title { font-family: var(--font-display); font-size: 0.88rem; font-weight: 800; color: var(--gold); margin-bottom: 0.2rem; }
+.cb-text { font-size: 0.82rem; color: var(--ink-mid); line-height: 1.5; }
+
+.bar-section { margin-top: 1rem; }
+.bar-labels { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem; }
+.bar-labels span { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.bar-labels strong { font-family: var(--font-display); font-size: 1.15rem; color: var(--teal); }
+.bar-track { height: 10px; border-radius: 999px; background: rgba(26,20,16,0.08); overflow: hidden; }
+.bar-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--teal), var(--gold)); transition: width 0.9s var(--ease); width: 0%; }
+
+.calc-actions {
+  display: flex; align-items: center; gap: 0.65rem; justify-content: flex-end; margin-top: 1.5rem;
+}
+.calc-action-btn {
+  height: 44px; padding: 0 1.15rem; border-radius: var(--r-full);
+  border: 1.5px solid var(--border-strong); background: white;
+  font-family: var(--font-display); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--ink-mid);
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  transition: color var(--t), border-color var(--t), background var(--t);
+}
+.calc-action-btn:hover { color: var(--ink); border-color: var(--ink); }
+.calc-action-btn.primary { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.calc-action-btn.primary:hover { background: #2a2018; }
+
+.calc-note { margin-top: 1rem; text-align: center; font-size: 0.75rem; color: var(--ink-soft); }
+
+/* ═══════════════════════════════
+   WHY SECTION
+═══════════════════════════════ */
+.why-section {
+  padding: clamp(4rem, 8vw, 7rem) 1.5rem;
+  background: var(--bg);
+}
+
+.why-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+  margin-top: 3rem;
+}
+
+.why-card {
+  border: 1.5px solid var(--border); border-radius: var(--r-xl);
+  padding: 1.75rem 1.5rem;
+  transition: transform var(--t), border-color var(--t), box-shadow var(--t);
+  background: white;
+}
+.why-card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: var(--shadow-md); }
+
+.wc-icon {
+  width: 50px; height: 50px; border-radius: 14px;
+  display: grid; place-items: center; font-size: 1.4rem;
+  margin-bottom: 1.1rem;
+}
+.wc-icon.a { background: var(--gold-dim); border: 1px solid rgba(196,136,42,0.2); }
+.wc-icon.b { background: var(--teal-dim); border: 1px solid rgba(26,143,138,0.18); }
+.wc-icon.c { background: var(--rust-dim); border: 1px solid rgba(196,74,26,0.18); }
+
+.wc-title {
+  font-family: var(--font-display); font-size: 1.25rem; font-weight: 700;
+  color: var(--ink); margin-bottom: 0.5rem; line-height: 1.1;
+}
+
+.wc-body { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.65; }
+
+.wc-stat {
+  margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--border);
+  display: flex; align-items: baseline; gap: 0.35rem;
+}
+.wc-num { font-family: var(--font-head); font-size: 2rem; color: var(--teal); line-height: 1; }
+.wc-lbl { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-soft); }
+
+/* ═══════════════════════════════
+   STEPS / HOW IT WORKS
+═══════════════════════════════ */
+.steps-section {
+  padding: clamp(4rem, 8vw, 7rem) 1.5rem;
+  background: var(--ink); color: var(--cream);
+  position: relative; overflow: hidden;
+}
+
+.steps-section::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse at 80% 10%, rgba(196,136,42,0.12), transparent 50%),
+    radial-gradient(ellipse at 10% 90%, rgba(26,143,138,0.1), transparent 50%);
+  pointer-events: none;
+}
+
+.steps-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+
+.steps-section .section-label { color: var(--gold-light); }
+.steps-section .section-label::before { background: var(--gold-light); }
+.steps-section .section-heading { color: var(--cream); }
+.steps-section .section-subhead { color: rgba(244,238,216,0.6); }
+
+.steps-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 3rem;
+}
+
+.step-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--r-xl); padding: 1.5rem;
+  position: relative;
+}
+
+.step-num {
+  font-family: var(--font-head); font-size: 3rem; color: rgba(255,255,255,0.07); line-height: 1;
+  position: absolute; top: 0.75rem; right: 1rem; font-style: italic;
+  pointer-events: none;
+}
+
+.step-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+
+.step-title {
+  font-family: var(--font-display); font-size: 1.05rem; font-weight: 700;
+  color: var(--cream); margin-bottom: 0.5rem;
+}
+
+.step-body { font-size: 0.84rem; color: rgba(244,238,216,0.55); line-height: 1.6; }
+
+/* ═══════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════ */
+.testimonial-section {
+  padding: clamp(4rem, 8vw, 7rem) 1.5rem;
+  background: var(--cream);
+}
+
+.t-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 3rem;
+}
+
+.t-card {
+  background: white; border: 1.5px solid var(--border); border-radius: var(--r-xl);
+  padding: 1.75rem;
+}
+
+.t-stars { font-size: 0.85rem; color: var(--gold); letter-spacing: 0.05em; margin-bottom: 0.85rem; }
+
+.t-quote {
+  font-family: var(--font-head); font-size: 1.05rem; font-style: italic;
+  color: var(--ink); line-height: 1.6; margin-bottom: 1.25rem;
+}
+
+.t-author { display: flex; align-items: center; gap: 0.75rem; }
+.t-avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 1.2rem; flex-shrink: 0;
+}
+.t-avatar.a { background: var(--gold-dim); border: 1px solid rgba(196,136,42,0.2); }
+.t-avatar.b { background: var(--teal-dim); border: 1px solid rgba(26,143,138,0.18); }
+.t-avatar.c { background: var(--rust-dim); border: 1px solid rgba(196,74,26,0.18); }
+
+.t-name { font-size: 0.88rem; font-weight: 800; color: var(--ink); }
+.t-role { font-size: 0.75rem; color: var(--ink-soft); }
+
+.t-card .t-delta {
+  margin-top: 1.1rem; padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, var(--teal-dim), var(--gold-dim));
+  border: 1px solid rgba(26,143,138,0.14); border-radius: var(--r-md);
+  font-size: 0.8rem; color: var(--ink-mid);
+}
+.t-delta strong { color: var(--teal); }
+
+/* ═══════════════════════════════
+   CTA SECTION
+═══════════════════════════════ */
+.cta-section {
+  padding: clamp(5rem, 10vw, 8rem) 1.5rem;
+  background: var(--bg);
+  text-align: center;
+}
+
+.cta-inner { max-width: 680px; margin: 0 auto; }
+
+.cta-heading {
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 1.5rem + 3.5vw, 5rem);
+  line-height: 1.0; letter-spacing: -0.02em; color: var(--ink);
+  margin-bottom: 1.25rem;
+}
+.cta-heading em { color: var(--gold); font-style: italic; }
+
+.cta-body { font-size: 1.1rem; color: var(--ink-mid); line-height: 1.7; margin-bottom: 2.5rem; }
+
+.cta-buttons { display: flex; align-items: center; justify-content: center; gap: 0.85rem; flex-wrap: wrap; }
+
+.cta-primary {
+  height: 66px; padding: 0 2.5rem; border-radius: var(--r-full);
+  background: var(--ink); color: var(--cream);
+  font-family: var(--font-display); font-weight: 800; font-size: 0.9rem;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  box-shadow: 0 6px 30px rgba(26,20,16,0.25);
+  transition: background var(--t), transform var(--t), box-shadow var(--t);
+}
+.cta-primary:hover { background: #2a2018; transform: translateY(-2px); box-shadow: 0 10px 40px rgba(26,20,16,0.33); }
+
+.cta-secondary {
+  height: 66px; padding: 0 2rem; border-radius: var(--r-full);
+  border: 1.5px solid var(--border-strong); color: var(--ink-mid);
+  font-family: var(--font-display); font-weight: 700; font-size: 0.9rem;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  transition: all var(--t);
+}
+.cta-secondary:hover { color: var(--ink); border-color: var(--ink); background: rgba(26,20,16,0.04); transform: translateY(-2px); }
+
+.cta-caveat { margin-top: 1.25rem; font-size: 0.78rem; color: var(--ink-soft); }
+
+/* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
+.site-footer {
+  background: var(--ink); color: rgba(244,238,216,0.5);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.footer-top {
+  max-width: 1200px; margin: 0 auto;
+  padding: 3rem 1.5rem 2rem;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; flex-wrap: wrap;
+}
+
+.footer-brand .fb-name {
+  font-family: var(--font-head); font-size: 2rem; font-style: italic; color: var(--cream);
+  margin-bottom: 0.5rem;
+}
+.footer-brand .fb-tagline { font-size: 0.82rem; color: rgba(244,238,216,0.4); max-width: 220px; line-height: 1.5; }
+
+.footer-links { display: flex; flex-direction: column; gap: 0.6rem; }
+.footer-links a { font-size: 0.82rem; color: rgba(244,238,216,0.5); transition: color var(--t); }
+.footer-links a:hover { color: var(--gold-light); }
+
+.footer-social { display: flex; gap: 0.65rem; }
+.social-btn {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+  display: grid; place-items: center; color: rgba(244,238,216,0.5);
+  transition: color var(--t), border-color var(--t);
+}
+.social-btn:hover { color: var(--gold-light); border-color: var(--gold-light); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 1.25rem 1.5rem;
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
+  font-size: 0.78rem; color: rgba(244,238,216,0.3);
+}
+.footer-bottom a { color: rgba(244,238,216,0.4); transition: color var(--t); }
+.footer-bottom a:hover { color: var(--gold-light); }
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media (max-width: 1020px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .hero-right { display: none; }
+  .why-grid { grid-template-columns: 1fr 1fr; }
+  .steps-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 860px) {
+  .calc-grid { grid-template-columns: 1fr; }
+  .result-col { position: static; }
+  .t-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .why-grid, .t-grid { grid-template-columns: 1fr; }
+  .steps-grid { grid-template-columns: 1fr; }
+  .nav-link { display: none; }
+  .topbar { padding: 0.75rem 1rem; }
+  .hero-proof { gap: 1rem; flex-direction: column; align-items: flex-start; }
+  .proof-divider { display: none; }
+}
+
+/* Print */
+@media print {
+  .site-header, .hero, .problem-band, .why-section, .steps-section,
+  .testimonial-section, .cta-section, .site-footer { display: none !important; }
+  .calc-section { padding: 0 !important; background: white !important; }
+  .calc-grid { grid-template-columns: 1fr 1fr !important; }
+}
+</style>
+</head>
+<body>
+<div class="site">
+
+<!-- ════ HEADER ════ -->
+<header class="site-header">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5l6.74-6.76z"></path>
+          <line x1="16" y1="8" x2="2" y2="22"></line>
+          <line x1="17.5" y1="15" x2="9" y2="15"></line>
+        </svg>
+      </div>
+      <div class="brand-name">my<span>salon</span>suite</div>
+    </div>
+    <nav class="nav-actions">
+      <a href="#calculator" class="nav-link">Income Calculator</a>
+      <a href="#how-it-works" class="nav-link">How It Works</a>
+      <a href="#request" class="nav-cta">
+        Request Suite Info
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- ════ HERO ════ -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="blink"></span>
+        For booth-renters & commission stylists
+      </div>
+
+      <h1 class="hero-heading">
+        You're building<br>
+        <span class="cross">their</span> empire.<br>
+        Time to build<br>
+        <em>yours.</em>
+      </h1>
+
+      <p class="hero-body">
+        Right now, for every <strong>$100 you earn</strong>, you hand <strong>$50–60 to someone else.</strong> That's not a partnership — that's a penalty for being talented. My Salon Suite gives you a private suite, zero commission taken, and every dollar you make stays with you.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#request" class="btn-primary">
+          Claim Your Suite
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#calculator" class="btn-ghost">
+          Calculate My Raise
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        </a>
+      </div>
+
+      <div class="hero-proof">
+        <div class="proof-item">
+          <span class="proof-num">$0</span>
+          <span class="proof-label">Commission taken</span>
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-item">
+          <span class="proof-num">700+</span>
+          <span class="proof-label">Locations nationwide</span>
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-item">
+          <span class="proof-num">3–5×</span>
+          <span class="proof-label">More take-home income</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="paystub-card">
+        <div class="paystub-tag">📋 Your Current Weekly Pay</div>
+        <div class="paystub-title">Commission Breakdown</div>
+        <div class="paystub-weeks">Based on $6,000/week revenue · 45% commission</div>
+
+        <div class="paystub-row">
+          <span class="ps-label">Revenue you generated</span>
+          <span class="ps-val earned">$6,000</span>
+        </div>
+        <div class="paystub-row">
+          <span class="ps-label">Salon keeps (55%)</span>
+          <span class="ps-val kept-by-them">$3,300</span>
+        </div>
+        <div class="paystub-row">
+          <span class="ps-label">Product commission (10%)</span>
+          <span class="ps-val">$20</span>
+        </div>
+
+        <hr class="paystub-divider">
+
+        <div class="paystub-net">
+          <span class="pn-label">Your weekly take-home</span>
+          <span class="pn-val">$2,720</span>
+        </div>
+
+        <div class="paystub-note">
+          <strong>In a suite, you'd keep $5,250+</strong> — that's an extra $130,000/yr. Same clients. Same talent. Different address.
+        </div>
+      </div>
+
+      <div class="float-badge">
+        <div class="fb-label">Suite Owner Net</div>
+        <div class="fb-val">$5,250</div>
+        <div class="fb-sub">vs. $2,720 on commission</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════ PROBLEM BAND ════ -->
+<div class="problem-band">
+  <div class="pb-inner">
+    <span class="pb-text">The average commission stylist gives away</span>
+    <span class="pb-num">$68,000+</span>
+    <span class="pb-text">per year to their salon. You don't have to.</span>
+  </div>
+</div>
+
+<!-- ════ CALCULATOR ════ -->
+<section class="calc-section" id="calculator">
+  <div class="section-inner">
+    <div class="section-label">Income Calculator</div>
+    <h2 class="section-heading">See exactly what you're<br><em>leaving on the table</em></h2>
+    <p class="section-subhead">Enter your real numbers. This calculator shows what you keep now vs. what you'd take home as a suite owner — same revenue, different rules.</p>
+
+    <div class="calc-grid">
+
+      <!-- LEFT: Inputs -->
+      <div style="display:grid;gap:1.25rem;">
+
+        <div class="calc-card">
+          <div class="cc-head">
+            <div class="cc-icon loss">✂️</div>
+            <div>
+              <h2>Your Commission Numbers</h2>
+              <p>What you're currently making — and giving away.</p>
+            </div>
+          </div>
+          <div class="cc-body">
+            <div class="fields-stack">
+              <div class="field">
+                <label for="grossRevenue">Weekly Service Revenue You Generate</label>
+                <div class="input-wrap">
+                  <span class="ipfx">$</span>
+                  <input type="number" id="grossRevenue" class="pfx" placeholder="e.g. 6,000" min="0" oninput="calculate()">
+                </div>
+              </div>
+              <div class="field">
+                <label for="commissionPct">Your Commission % on Services</label>
+                <div class="input-wrap">
+                  <input type="number" id="commissionPct" class="sfx" placeholder="e.g. 45" min="0" max="100" oninput="calculate()">
+                  <span class="isfx">%</span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="weeklyProductSales">Weekly Product Sales</label>
+                <div class="input-wrap">
+                  <span class="ipfx">$</span>
+                  <input type="number" id="weeklyProductSales" class="pfx" placeholder="e.g. 200" min="0" oninput="calculate()">
+                </div>
+              </div>
+              <div class="field">
+                <label for="productCommissionPct">Your Product Commission %</label>
+                <div class="input-wrap">
+                  <input type="number" id="productCommissionPct" class="sfx" placeholder="e.g. 10" min="0" max="100" oninput="calculate()">
+                  <span class="isfx">%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-card">
+          <div class="cc-head">
+            <div class="cc-icon gain">◈</div>
+            <div>
+              <h2>Your Suite Expenses</h2>
+              <p>What it costs to own your own space — that's all.</p>
+            </div>
+          </div>
+          <div class="cc-body">
+            <div class="fields-stack">
+              <div class="field">
+                <label for="weeklyRent">Weekly Suite Rent</label>
+                <div class="input-wrap">
+                  <span class="ipfx">$</span>
+                  <input type="number" id="weeklyRent" class="pfx" placeholder="e.g. 700" min="0" oninput="calculate()">
+                </div>
+              </div>
+              <div class="field">
+                <label for="weeklyMisc">Weekly Misc. Expenses (supplies, etc.)</label>
+                <div class="input-wrap">
+                  <span class="ipfx">$</span>
+                  <input type="number" id="weeklyMisc" class="pfx" placeholder="e.g. 300" min="0" oninput="calculate()">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-actions">
+          <button class="calc-action-btn" onclick="resetCalculator()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-3.51"></path></svg>
+            Reset
+          </button>
+          <button class="calc-action-btn" onclick="window.print()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            Print
+          </button>
+          <a href="#request" class="calc-action-btn primary">
+            Request Suite Info →
+          </a>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Results -->
+      <div class="result-col">
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+
+          <div class="result-card">
+            <div class="rc-head">
+              <span class="rc-title">Commission</span>
+              <span class="rc-badge loss">Now</span>
+            </div>
+            <div class="result-rows">
+              <div class="result-row">
+                <span class="rr-label">Service Earnings</span>
+                <span class="rr-val placeholder" id="c-serviceEarnings">—</span>
+              </div>
+              <div class="result-row">
+                <span class="rr-label">Salon Keeps</span>
+                <span class="rr-val placeholder" id="c-salonKeeps">—</span>
+              </div>
+              <div class="result-row">
+                <span class="rr-label">Product Earnings</span>
+                <span class="rr-val placeholder" id="c-productEarnings">—</span>
+              </div>
+              <div class="result-row">
+                <span class="rr-label">Weekly Net</span>
+                <span class="rr-val total placeholder" id="c-weeklyNet">—</span>
+              </div>
+            </div>
+            <div class="annual-box">
+              <div class="ab-label">Annual Income</div>
+              <div class="ab-val placeholder" id="c-annualNet">—</div>
+            </div>
+          </div>
+
+          <div class="result-card">
+            <div class="rc-head">
+              <span class="rc-title">Suite Owner</span>
+              <span class="rc-badge gain">Suite</span>
+            </div>
+            <div class="result-rows">
+              <div class="result-row">
+                <span class="rr-label">Service Earnings</span>
+                <span class="rr-val placeholder" id="s-serviceEarnings">—</span>
+              </div>
+              <div class="result-row">
+                <span class="rr-label">Product Earnings</span>
+                <span class="rr-val placeholder" id="s-productEarnings">—</span>
+              </div>
+              <div class="result-row">
+                <span class="rr-label">Rent</span>
+                <span class="rr-val placeholder" id="s-rent">—</span>
+              </div>
+              <div class="result-row">
+                <span class="rr-label">Misc. Costs</span>
+                <span class="rr-val placeholder" id="s-misc">—</span>
+              </div>
+              <div class="result-row">
+                <span class="rr-label">Weekly Net</span>
+                <span class="rr-val total placeholder" id="s-weeklyNet">—</span>
+              </div>
+            </div>
+            <div class="annual-box">
+              <div class="ab-label">Annual Income</div>
+              <div class="ab-val placeholder" id="s-annualNet">—</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="result-card">
+          <div class="compare-box">
+            <div class="cb-title" id="compare-title">Awaiting Your Numbers</div>
+            <div class="cb-text" id="compare-text">Fill in your numbers above to see how much more you'd keep as a suite owner.</div>
+          </div>
+          <div class="bar-section" style="margin-top:1.1rem;">
+            <div class="bar-labels">
+              <span>Commission</span>
+              <strong id="bar-pct">—</strong>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" id="bar-fill"></div>
+            </div>
+            <div class="bar-labels" style="margin-top:0.4rem;">
+              <span>&nbsp;</span>
+              <span style="font-size:0.68rem;color:var(--teal);">Suite Owner</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <p class="calc-note">Estimates only. Suite rates vary by location. Product earnings assume 50% retention in suite ownership model.</p>
+  </div>
+</section>
+
+<!-- ════ WHY ════ -->
+<section class="why-section">
+  <div class="section-inner">
+    <div class="section-label">Why Suite Ownership Wins</div>
+    <h2 class="section-heading">Three problems commission<br><em>can never fix</em></h2>
+    <p class="section-subhead">You didn't spend years mastering your craft to work for 45 cents on the dollar. Here's what suite ownership changes — permanently.</p>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="wc-icon a">💰</div>
+        <h3 class="wc-title">You Keep Every Dollar You Earn</h3>
+        <p class="wc-body">On commission, you're an employee in everything but name. Flat rent replaces the 55% tithe. The $3,000 your clients pay? All of it comes to you. After expenses, most suite owners double their take-home within 90 days.</p>
+        <div class="wc-stat">
+          <span class="wc-num">100%</span>
+          <span class="wc-lbl">of your service revenue — yours</span>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="wc-icon b">🗓️</div>
+        <h3 class="wc-title">Your Schedule, Your Rules</h3>
+        <p class="wc-body">No more mandated floor hours. No "the salon opens at 9." Book who you want, when you want, charge what the market will bear. Your highest-value hours go to your highest-value clients — not whoever walks in.</p>
+        <div class="wc-stat">
+          <span class="wc-num">0</span>
+          <span class="wc-lbl">Commission approvals needed</span>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="wc-icon c">👑</div>
+        <h3 class="wc-title">You Build a Business, Not a Job</h3>
+        <p class="wc-body">Your clientele is yours. Your brand is yours. Your product sales revenue is yours. Commission stylists build their salon owner's equity for years. Suite owners build their own. That equity goes with you wherever you go.</p>
+        <div class="wc-stat">
+          <span class="wc-num">5×</span>
+          <span class="wc-lbl">Faster wealth accumulation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ STEPS ════ -->
+<section class="steps-section" id="how-it-works">
+  <div class="steps-inner">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-heading">From commission to <em>owner</em><br>in four steps</h2>
+    <p class="section-subhead" style="max-width:520px;">No complicated lease. No build-out. No risk. My Salon Suite provides everything — you just show up and start earning more.</p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-icon">📍</div>
+        <h3 class="step-title">Find Your Location</h3>
+        <p class="step-body">700+ locations nationwide. Search by zip, filter by availability. Most markets have suites open this month — not six months from now.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-icon">🤝</div>
+        <h3 class="step-title">Request Your Tour</h3>
+        <p class="step-body">A local advisor walks you through the space, the costs, and the math. No hard sell — just real numbers so you can decide confidently.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-icon">🔑</div>
+        <h3 class="step-title">Sign & Set Up</h3>
+        <p class="step-body">Week-to-week flexibility or longer terms. Fully equipped suite means you're open for business the same week you sign. Seriously.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-icon">📈</div>
+        <h3 class="step-title">Keep What You Earn</h3>
+        <p class="step-body">From day one: no commission splits, no revenue reports, no asking permission. Flat rent. Full freedom. The rest is yours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ TESTIMONIALS ════ -->
+<section class="testimonial-section">
+  <div class="section-inner">
+    <div class="section-label">Real Results</div>
+    <h2 class="section-heading">They made the<br><em>same switch you're considering</em></h2>
+
+    <div class="t-grid">
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"I was making $4,200 a week for my salon. I was taking home $1,900. The math was the most depressing thing I'd ever seen. Six months in my suite, I cleared $112,000 last year. Same clients."</p>
+        <div class="t-author">
+          <div class="t-avatar a">✂️</div>
+          <div>
+            <div class="t-name">Dana Whitfield</div>
+            <div class="t-role">Color Specialist · Nashville, TN</div>
+          </div>
+        </div>
+        <div class="t-delta">First-year suite income: <strong>+$64,000 vs. commission</strong></div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"I kept waiting for the 'right time' to leave. Then I ran the calculator. I was giving away $72,000 a year. There's never a right time to keep doing that."</p>
+        <div class="t-author">
+          <div class="t-avatar b">💅</div>
+          <div>
+            <div class="t-name">Marcus Reyes</div>
+            <div class="t-role">Nail Artist · Austin, TX</div>
+          </div>
+        </div>
+        <div class="t-delta">Commission income lost per year: <strong>$72,000 recovered</strong></div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"The thing no one tells you: the freedom isn't just financial. I do facials on my schedule, price my services correctly, and don't ask anyone for permission. My clients love the private experience."</p>
+        <div class="t-author">
+          <div class="t-avatar c">🌿</div>
+          <div>
+            <div class="t-name">Priya Anand</div>
+            <div class="t-role">Esthetician · Chicago, IL</div>
+          </div>
+        </div>
+        <div class="t-delta">Revenue increase after move: <strong>+38% in 90 days</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ CTA ════ -->
+<section class="cta-section" id="request">
+  <div class="cta-inner">
+    <div class="section-label" style="justify-content:center;">Limited Availability</div>
+    <h2 class="cta-heading">Stop donating your<br>revenue to someone else's<br><em>retirement fund.</em></h2>
+    <p class="cta-body">Suites fill fast in most markets. The stylist who requests info today gets a tour this week. The one who waits might get put on a waitlist. Same talent. Different timing.</p>
+
+    <div class="cta-buttons">
+      <a href="#" class="cta-primary">
+        Request Suite Info Now
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="#" class="cta-secondary">
+        Find a Location Near Me
+      </a>
+    </div>
+
+    <p class="cta-caveat">No commitment. No hard pitch. Just a honest tour and real numbers.</p>
+  </div>
+</section>
+
+<!-- ════ FOOTER ════ -->
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="fb-name">My Salon Suite</div>
+      <div class="fb-tagline">The private suite company for ambitious beauty professionals.</div>
+    </div>
+    <div class="footer-links">
+      <a href="#">mysalonsuite.com</a>
+      <a href="#">Find a Location</a>
+      <a href="#">Request Suite Information</a>
+      <a href="#">For Salon Clients</a>
+    </div>
+    <div class="footer-social">
+      <a href="#" class="social-btn" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg>
+      </a>
+      <a href="#" class="social-btn" aria-label="Facebook">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+      </a>
+      <a href="#" class="social-btn" aria-label="YouTube">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"></path><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"></polygon></svg>
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2025 My Salon Suite. All rights reserved.</div>
+    <div>
+      <a href="#">Privacy Policy</a> · <a href="#">Terms of Use</a>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /site -->
+
+<script>
+function fmt(n) {
+  return '$' + Math.round(n).toLocaleString('en-US');
+}
+function val(id) {
+  const v = document.getElementById(id).value.trim();
+  return v === '' ? null : (parseFloat(v) || 0);
+}
+function setResult(id, text, isPlaceholder) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  if (isPlaceholder) { el.classList.add('placeholder'); } else { el.classList.remove('placeholder'); }
+}
+
+function calculate() {
+  const grossRevenue       = val('grossRevenue');
+  const commissionPct      = val('commissionPct');
+  const weeklyProductSales = val('weeklyProductSales');
+  const productCommPct     = val('productCommissionPct');
+  const weeklyRent         = val('weeklyRent');
+  const weeklyMisc         = val('weeklyMisc');
+
+  const hasAny = [grossRevenue, commissionPct, weeklyProductSales, productCommPct, weeklyRent, weeklyMisc].some(v => v !== null);
+
+  if (!hasAny) { resetDisplay(); return; }
+
+  const gr  = grossRevenue       ?? 0;
+  const cp  = (commissionPct     ?? 0) / 100;
+  const wps = weeklyProductSales ?? 0;
+  const pcp = (productCommPct    ?? 0) / 100;
+  const wr  = weeklyRent         ?? 0;
+  const wm  = weeklyMisc         ?? 0;
+
+  const cServiceEarnings = gr * cp;
+  const cSalonKeeps      = gr - cServiceEarnings;
+  const cProductEarnings = wps * pcp;
+  const cWeeklyNet       = cServiceEarnings + cProductEarnings;
+  const cAnnualNet       = cWeeklyNet * 52;
+
+  const sServiceEarnings = gr;
+  const sProductEarnings = wps * 0.50;
+  const sWeeklyNet       = sServiceEarnings + sProductEarnings - wr - wm;
+  const sAnnualNet       = sWeeklyNet * 52;
+
+  setResult('c-serviceEarnings', fmt(cServiceEarnings), false);
+  setResult('c-salonKeeps',      fmt(cSalonKeeps),      false);
+  setResult('c-productEarnings', fmt(cProductEarnings), false);
+  setResult('c-weeklyNet',       fmt(cWeeklyNet),       false);
+  setResult('c-annualNet',       fmt(cAnnualNet),       false);
+
+  setResult('s-serviceEarnings', fmt(sServiceEarnings), false);
+  setResult('s-productEarnings', fmt(sProductEarnings), false);
+  setResult('s-rent',            '−' + fmt(wr),         false);
+  setResult('s-misc',            '−' + fmt(wm),         false);
+  setResult('s-weeklyNet',       fmt(sWeeklyNet),        false);
+  setResult('s-annualNet',       fmt(sAnnualNet),        false);
+
+  const diff   = sAnnualNet - cAnnualNet;
+  const barPct = sAnnualNet > 0 ? Math.min(Math.round((cAnnualNet / sAnnualNet) * 100), 100) : 0;
+
+  document.getElementById('bar-fill').style.width = barPct + '%';
+  document.getElementById('bar-pct').textContent = barPct + '% of Suite';
+
+  const compareTitle = document.getElementById('compare-title');
+  const compareText  = document.getElementById('compare-text');
+
+  if (diff > 0) {
+    compareTitle.textContent = '🔥 Suite Puts ' + fmt(diff) + ' More in Your Pocket This Year';
+    compareText.textContent  = 'That\'s money you\'re currently handing to your salon — for using your own talent. As a suite owner with these numbers, you\'d keep ' + fmt(diff) + ' more annually.';
+  } else if (diff < 0) {
+    compareTitle.textContent = 'Commission Leads by ' + fmt(Math.abs(diff));
+    compareText.textContent  = 'With these expense numbers, commission still wins — try adjusting your rent or misc. costs. Many suite owners negotiate lower rent to close this gap.';
+  } else {
+    compareTitle.textContent = 'Break-Even — Both Paths Equal';
+    compareText.textContent  = 'Same take-home either way with these numbers. But remember: as a suite owner, you own the brand, the clientele, and the upside.';
+  }
+}
+
+function resetDisplay() {
+  ['c-serviceEarnings','c-salonKeeps','c-productEarnings','c-weeklyNet','c-annualNet',
+   's-serviceEarnings','s-productEarnings','s-rent','s-misc','s-weeklyNet','s-annualNet']
+    .forEach(id => setResult(id, '—', true));
+
+  document.getElementById('bar-fill').style.width = '0%';
+  document.getElementById('bar-pct').textContent = '—';
+  document.getElementById('compare-title').textContent = 'Awaiting Your Numbers';
+  document.getElementById('compare-text').textContent  = 'Fill in your numbers above to see how much more you\'d keep as a suite owner.';
+}
+
+function resetCalculator() {
+  ['grossRevenue','commissionPct','weeklyProductSales','productCommissionPct','weeklyRent','weeklyMisc']
+    .forEach(id => { document.getElementById(id).value = ''; });
+  resetDisplay();
+}
+
+resetDisplay();
+</script>
+</body>
+</html>
