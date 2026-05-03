@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Salon Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+:root {
+  --black: #0a0a0a;
+  --white: #ffffff;
+  --off: #f5f5f3;
+  --mid: #888;
+  --soft: #d4d4d4;
+  --red: #e02020;
+  --font-big: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--white);
+  color: var(--black);
+  line-height: 1.5;
+}
+
+/* ── HEADER ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 99;
+  background: var(--white);
+  border-bottom: 1px solid var(--soft);
+  padding: 0 2rem;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.logo {
+  font-family: var(--font-big);
+  font-size: 1.4rem; letter-spacing: 0.05em;
+  color: var(--black);
+}
+
+.header-cta {
+  background: var(--black); color: var(--white);
+  font-family: var(--font-body); font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.5rem 1.25rem; border-radius: 4px;
+  text-decoration: none;
+  transition: background 150ms;
+}
+.header-cta:hover { background: #222; }
+
+/* ── HERO ── */
+.hero {
+  padding-top: 56px;
+  min-height: 100vh;
+  display: flex; align-items: center;
+  background: var(--black);
+  color: var(--white);
+  position: relative; overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 100% 0%, rgba(224,32,32,0.15), transparent 55%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative; z-index: 1;
+  max-width: 760px; margin: 0 auto;
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.hero-tag {
+  display: inline-block;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 1.5rem;
+}
+
+h1 {
+  font-family: var(--font-big);
+  font-size: clamp(4rem, 3rem + 4vw, 7.5rem);
+  line-height: 0.95; letter-spacing: 0.02em;
+  color: var(--white);
+  margin-bottom: 1.75rem;
+}
+
+h1 .strike {
+  color: #444;
+  position: relative;
+  display: inline-block;
+}
+h1 .strike::after {
+  content: '';
+  position: absolute; left: 0; top: 48%;
+  width: 100%; height: 3px;
+  background: var(--red);
+}
+h1 .red { color: var(--red); }
+
+.hero-sub {
+  font-size: clamp(1rem, 0.9rem + 0.3vw, 1.15rem);
+  color: #999; line-height: 1.7;
+  max-width: 480px; margin: 0 auto 2.25rem;
+}
+.hero-sub strong { color: var(--white); }
+
+.hero-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--red); color: var(--white);
+  font-family: var(--font-body); font-size: 0.85rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0 2rem; height: 56px; border-radius: 4px;
+  text-decoration: none;
+  transition: background 150ms, transform 150ms;
+}
+.hero-btn:hover { background: #c41a1a; transform: translateY(-1px); }
+.hero-btn svg { flex-shrink: 0; }
+
+/* Paystub */
+.paystub {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 6px;
+  padding: 1.75rem;
+}
+
+.ps-header {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: #555; margin-bottom: 1.25rem;
+  padding-bottom: 1rem; border-bottom: 1px solid #1e1e1e;
+}
+
+.ps-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 0.55rem 0; border-bottom: 1px solid #1a1a1a;
+  font-size: 0.88rem;
+}
+.ps-row:last-of-type { border-bottom: none; }
+.ps-label { color: #666; }
+.ps-val { font-weight: 700; color: #ccc; font-variant-numeric: tabular-nums; }
+.ps-val.gone { color: #444; text-decoration: line-through; }
+.ps-val.yours { color: var(--white); }
+
+.ps-divider { border: none; border-top: 1px dashed #222; margin: 0.75rem 0; }
+
+.ps-total {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding-top: 0.5rem;
+}
+.ps-total-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #555; }
+.ps-total-val { font-family: var(--font-big); font-size: 2.8rem; color: var(--white); line-height: 1; }
+
+.ps-note {
+  margin-top: 1rem; padding: 0.75rem;
+  background: rgba(224,32,32,0.08); border-left: 2px solid var(--red);
+  font-size: 0.78rem; color: #888; line-height: 1.5;
+}
+.ps-note strong { color: var(--red); }
+
+/* ── CALCULATOR ── */
+.calc-section {
+  padding: 6rem 2rem;
+  background: var(--off);
+  border-top: 1px solid var(--soft);
+}
+
+.calc-inner { max-width: 1100px; margin: 0 auto; }
+
+.calc-header { margin-bottom: 3rem; }
+
+.calc-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--mid); margin-bottom: 0.6rem;
+}
+
+.calc-title {
+  font-family: var(--font-big);
+  font-size: clamp(2.5rem, 1.5rem + 3vw, 5rem);
+  line-height: 0.95; letter-spacing: 0.02em; color: var(--black);
+}
+.calc-title .red { color: var(--red); }
+
+.calc-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start;
+}
+
+/* Input cards */
+.input-card {
+  background: var(--white);
+  border: 1px solid var(--soft); border-radius: 6px;
+  overflow: hidden;
+}
+
+.ic-head {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--soft);
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--mid);
+}
+
+.ic-body { padding: 1.25rem 1.5rem; display: grid; gap: 1rem; }
+
+.field { display: grid; gap: 0.4rem; }
+.field label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--mid);
+}
+
+.iw { position: relative; }
+.iw input {
+  width: 100%; height: 48px;
+  background: var(--off); border: 1px solid var(--soft); border-radius: 4px;
+  font-family: var(--font-body); font-size: 1rem; font-weight: 700; color: var(--black);
+  padding: 0 1rem;
+  transition: border-color 150ms;
+  -moz-appearance: textfield;
+}
+.iw input::-webkit-outer-spin-button,
+.iw input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.iw input::placeholder { color: #bbb; font-weight: 400; }
+.iw input:focus { border-color: var(--black); outline: none; background: var(--white); }
+.iw input.p { padding-left: 1.6rem; }
+.iw input.s { padding-right: 1.6rem; }
+.pfx, .sfx {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  font-size: 0.88rem; font-weight: 700; color: #aaa; pointer-events: none;
+}
+.pfx { left: 0.7rem; }
+.sfx { right: 0.7rem; }
+
+/* Result column */
+.result-col { display: grid; gap: 1.25rem; position: sticky; top: 72px; }
+
+.result-card {
+  background: var(--white);
+  border: 1px solid var(--soft); border-radius: 6px;
+  overflow: hidden;
+}
+
+.rc-head {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--soft);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.rc-title { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); }
+.rc-pill {
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.2rem 0.6rem; border-radius: 2px;
+}
+.rc-pill.now { background: #f5f5f5; color: #999; }
+.rc-pill.suite { background: var(--black); color: var(--white); }
+
+.rc-body { padding: 1.25rem 1.5rem; }
+
+.r-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 0.45rem 0; border-bottom: 1px solid #f0f0f0;
+  font-size: 0.84rem;
+}
+.r-row:last-of-type { border-bottom: none; }
+.r-lbl { color: var(--mid); }
+.r-val { font-weight: 700; color: var(--black); font-variant-numeric: tabular-nums; }
+.r-val.ph { color: #ccc; font-weight: 400; }
+.r-val.total { color: var(--black); font-size: 0.95rem; }
+
+.annual-row {
+  margin-top: 1rem; padding: 1rem 1.5rem;
+  border-top: 1px solid var(--soft);
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.al-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mid); }
+.al-val { font-family: var(--font-big); font-size: 2.2rem; color: var(--black); line-height: 1; }
+.al-val.ph { color: #ddd; font-size: 1.8rem; }
+
+/* Diff card */
+.diff-card {
+  background: var(--black); color: var(--white);
+  border-radius: 6px; padding: 1.5rem;
+}
+.diff-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #666; margin-bottom: 0.4rem; }
+.diff-num { font-family: var(--font-big); font-size: clamp(2.5rem, 2rem + 2vw, 4rem); color: var(--white); line-height: 1; margin-bottom: 0.3rem; }
+.diff-num.positive { color: var(--red); }
+.diff-sub { font-size: 0.82rem; color: #666; line-height: 1.5; }
+.diff-sub strong { color: #999; }
+
+.bar-wrap { margin-top: 1.25rem; }
+.bar-meta { display: flex; justify-content: space-between; margin-bottom: 0.4rem; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #444; }
+.bar-track { height: 6px; background: #1e1e1e; border-radius: 999px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--red); border-radius: inherit; width: 0%; transition: width 0.8s cubic-bezier(0.16,1,0.3,1); }
+
+/* ── CTA ── */
+.cta-section {
+  padding: 7rem 2rem;
+  background: var(--black); color: var(--white);
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(224,32,32,0.12), transparent 60%);
+  pointer-events: none;
+}
+
+.cta-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+
+.cta-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #444; margin-bottom: 1.25rem; }
+
+.cta-heading {
+  font-family: var(--font-big);
+  font-size: clamp(3.5rem, 2rem + 5vw, 7rem);
+  line-height: 0.95; letter-spacing: 0.02em;
+  color: var(--white); margin-bottom: 1.5rem;
+}
+.cta-heading .red { color: var(--red); }
+
+.cta-sub { font-size: 1rem; color: #666; line-height: 1.7; margin-bottom: 2.5rem; }
+
+.cta-btn {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  background: var(--red); color: var(--white);
+  font-family: var(--font-body); font-size: 0.9rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0 2.5rem; height: 64px; border-radius: 4px;
+  text-decoration: none;
+  transition: background 150ms, transform 150ms;
+  box-shadow: 0 4px 20px rgba(224,32,32,0.3);
+}
+.cta-btn:hover { background: #c41a1a; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(224,32,32,0.4); }
+
+.cta-caveat { margin-top: 1rem; font-size: 0.75rem; color: #444; }
+
+/* ── FOOTER ── */
+footer {
+  background: #060606;
+  border-top: 1px solid #111;
+  padding: 1.75rem 2rem;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  font-size: 0.75rem; color: #444;
+}
+footer a { color: #444; text-decoration: none; }
+footer a:hover { color: #888; }
+.footer-links { display: flex; gap: 1.5rem; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .calc-grid { grid-template-columns: 1fr; }
+  .result-col { position: static; }
+}
+@media (max-width: 560px) {
+  h1 { font-size: 4rem; }
+  .calc-title { font-size: 2.8rem; }
+  header { padding: 0 1rem; }
+  .hero-inner, .calc-section, .cta-section { padding-left: 1.25rem; padding-right: 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">My Salon Suite</div>
+  <a href="#cta" class="header-cta">Request Suite Info</a>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <div class="hero-tag">For commission stylists &amp; booth renters</div>
+    <h1>
+      STOP<br>
+      FUNDING<br>
+      <span class="strike">THEIR</span><br>
+      <span class="red">DREAM.</span>
+    </h1>
+    <p class="hero-sub">
+      Every week you hand <strong>50–60% of your revenue</strong> to someone who didn't do the work. A suite costs flat rent. That's it. Everything else is yours.
+    </p>
+    <a href="#calculator" class="hero-btn">
+      See What You're Losing
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+    </a>
+
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section class="calc-section" id="calculator">
+  <div class="calc-inner">
+
+    <div class="calc-header">
+      <div class="calc-label">Income Calculator</div>
+      <div class="calc-title">YOUR REAL<br><span class="red">NUMBERS.</span></div>
+    </div>
+
+    <div class="calc-grid">
+
+      <!-- Inputs -->
+      <div style="display:grid;gap:1rem;">
+
+        <div class="input-card">
+          <div class="ic-head">On Commission — What You Give Away</div>
+          <div class="ic-body">
+            <div class="field">
+              <label for="grossRevenue">Weekly Revenue You Generate</label>
+              <div class="iw">
+                <span class="pfx">$</span>
+                <input type="number" id="grossRevenue" class="p" placeholder="6000" min="0" oninput="calc()">
+              </div>
+            </div>
+            <div class="field">
+              <label for="commPct">Your Commission %</label>
+              <div class="iw">
+                <input type="number" id="commPct" class="s" placeholder="45" min="0" max="100" oninput="calc()">
+                <span class="sfx">%</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="prodSales">Weekly Product Sales</label>
+              <div class="iw">
+                <span class="pfx">$</span>
+                <input type="number" id="prodSales" class="p" placeholder="200" min="0" oninput="calc()">
+              </div>
+            </div>
+            <div class="field">
+              <label for="prodPct">Product Commission %</label>
+              <div class="iw">
+                <input type="number" id="prodPct" class="s" placeholder="10" min="0" max="100" oninput="calc()">
+                <span class="sfx">%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-card">
+          <div class="ic-head">As Suite Owner — Your Only Costs</div>
+          <div class="ic-body">
+            <div class="field">
+              <label for="rent">Weekly Suite Rent</label>
+              <div class="iw">
+                <span class="pfx">$</span>
+                <input type="number" id="rent" class="p" placeholder="700" min="0" oninput="calc()">
+              </div>
+            </div>
+            <div class="field">
+              <label for="misc">Weekly Misc. Expenses</label>
+              <div class="iw">
+                <span class="pfx">$</span>
+                <input type="number" id="misc" class="p" placeholder="300" min="0" oninput="calc()">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:0.75rem;justify-content:flex-end;">
+          <button onclick="reset()" style="height:40px;padding:0 1rem;border:1px solid var(--soft);border-radius:4px;background:var(--white);font-family:var(--font-body);font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);cursor:pointer;">Reset</button>
+        </div>
+
+      </div>
+
+      <!-- Results -->
+      <div class="result-col">
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+
+          <div class="result-card">
+            <div class="rc-head">
+              <span class="rc-title">Commission</span>
+              <span class="rc-pill now">Now</span>
+            </div>
+            <div class="rc-body">
+              <div class="r-row"><span class="r-lbl">Service earnings</span><span class="r-val ph" id="c-svc">—</span></div>
+              <div class="r-row"><span class="r-lbl">Salon keeps</span><span class="r-val ph" id="c-gone">—</span></div>
+              <div class="r-row"><span class="r-lbl">Product earnings</span><span class="r-val ph" id="c-prod">—</span></div>
+              <div class="r-row"><span class="r-lbl">Weekly net</span><span class="r-val total ph" id="c-wk">—</span></div>
+            </div>
+            <div class="annual-row">
+              <span class="al-label">Annual</span>
+              <span class="al-val ph" id="c-yr">—</span>
+            </div>
+          </div>
+
+          <div class="result-card">
+            <div class="rc-head">
+              <span class="rc-title">Suite Owner</span>
+              <span class="rc-pill suite">Suite</span>
+            </div>
+            <div class="rc-body">
+              <div class="r-row"><span class="r-lbl">Service earnings</span><span class="r-val ph" id="s-svc">—</span></div>
+              <div class="r-row"><span class="r-lbl">Product earnings</span><span class="r-val ph" id="s-prod">—</span></div>
+              <div class="r-row"><span class="r-lbl">Rent</span><span class="r-val ph" id="s-rent">—</span></div>
+              <div class="r-row"><span class="r-lbl">Misc.</span><span class="r-val ph" id="s-misc">—</span></div>
+              <div class="r-row"><span class="r-lbl">Weekly net</span><span class="r-val total ph" id="s-wk">—</span></div>
+            </div>
+            <div class="annual-row">
+              <span class="al-label">Annual</span>
+              <span class="al-val ph" id="s-yr">—</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="diff-card">
+          <div class="diff-label">Extra annual income as suite owner</div>
+          <div class="diff-num" id="diff-num">—</div>
+          <div class="diff-sub" id="diff-sub">Enter your numbers to see the gap.</div>
+          <div class="bar-wrap">
+            <div class="bar-meta">
+              <span>Commission</span>
+              <span id="bar-pct">—</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" id="bar-fill"></div></div>
+            <div style="text-align:right;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#444;margin-top:0.3rem;">Suite Owner</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <p style="margin-top:1.5rem;font-size:0.72rem;color:var(--mid);text-align:center;">Estimates only. Suite rates vary by location. Product at 50% retention in suite model.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-inner">
+    <div class="cta-tag">700+ locations nationwide · Suites filling fast</div>
+    <h2 class="cta-heading">YOUR TALENT.<br><span class="red">YOUR MONEY.</span></h2>
+    <p class="cta-sub">One conversation. No commitment. We show you the space, the costs, and the math. You decide.</p>
+    <a href="#" class="cta-btn">
+      Request Suite Info
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+    <p class="cta-caveat">No hard sell. Just real numbers.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>© 2025 My Salon Suite</div>
+  <div class="footer-links">
+    <a href="#">mysalonsuite.com</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+  </div>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
+const get = id => { const v = $(id).value.trim(); return v === '' ? null : (parseFloat(v) || 0); };
+
+function set(id, text, ph) {
+  const el = $(id);
+  el.textContent = text;
+  ph ? el.classList.add('ph') : el.classList.remove('ph');
+}
+
+function calc() {
+  const gr  = get('grossRevenue');
+  const cp  = get('commPct');
+  const wps = get('prodSales');
+  const pcp = get('prodPct');
+  const wr  = get('rent');
+  const wm  = get('misc');
+
+  if ([gr,cp,wps,pcp,wr,wm].every(v => v === null)) { blank(); return; }
+
+  const g  = gr  ?? 0;
+  const c  = (cp  ?? 0) / 100;
+  const ps = wps ?? 0;
+  const pc = (pcp ?? 0) / 100;
+  const r  = wr  ?? 0;
+  const m  = wm  ?? 0;
+
+  const cSvc  = g * c;
+  const cGone = g - cSvc;
+  const cProd = ps * pc;
+  const cWk   = cSvc + cProd;
+  const cYr   = cWk * 52;
+
+  const sSvc  = g;
+  const sProd = ps * 0.5;
+  const sWk   = sSvc + sProd - r - m;
+  const sYr   = sWk * 52;
+
+  set('c-svc',  fmt(cSvc),  false);
+  set('c-gone', fmt(cGone), false);
+  set('c-prod', fmt(cProd), false);
+  set('c-wk',   fmt(cWk),   false);
+  set('c-yr',   fmt(cYr),   false);
+
+  set('s-svc',  fmt(sSvc),       false);
+  set('s-prod', fmt(sProd),      false);
+  set('s-rent', '−' + fmt(r),    false);
+  set('s-misc', '−' + fmt(m),    false);
+  set('s-wk',   fmt(sWk),        false);
+  set('s-yr',   fmt(sYr),        false);
+
+  const diff = sYr - cYr;
+  const pct  = sYr > 0 ? Math.min(Math.round((cYr / sYr) * 100), 100) : 0;
+
+  $('bar-fill').style.width = pct + '%';
+  $('bar-pct').textContent  = pct + '%';
+
+  const dn = $('diff-num');
+  if (diff > 0) {
+    dn.textContent = fmt(diff);
+    dn.classList.add('positive');
+    $('diff-sub').innerHTML = 'More money in your pocket every year. <strong>Same clients. Same talent.</strong>';
+  } else if (diff < 0) {
+    dn.textContent = fmt(Math.abs(diff));
+    dn.classList.remove('positive');
+    $('diff-sub').innerHTML = 'Commission leads with these numbers. Try adjusting your rent.';
+  } else {
+    dn.textContent = '$0';
+    dn.classList.remove('positive');
+    $('diff-sub').textContent = 'Break even — but as a suite owner you own the brand and clientele.';
+  }
+}
+
+function blank() {
+  ['c-svc','c-gone','c-prod','c-wk','c-yr','s-svc','s-prod','s-rent','s-misc','s-wk','s-yr']
+    .forEach(id => set(id, '—', true));
+  $('bar-fill').style.width = '0%';
+  $('bar-pct').textContent  = '—';
+  $('diff-num').textContent = '—';
+  $('diff-num').classList.remove('positive');
+  $('diff-sub').textContent = 'Enter your numbers to see the gap.';
+}
+
+function reset() {
+  ['grossRevenue','commPct','prodSales','prodPct','rent','misc']
+    .forEach(id => $(id).value = '');
+  blank();
+}
+
+blank();
+</script>
+</body>
+</html>
