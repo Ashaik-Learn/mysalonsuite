@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Salon Suite — Own Your Chair. Keep Every Dollar.</title>
+<link href="./salon1.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+:root{
+  --ink:#0d0d0b;--paper:#f7f4ee;--paper-dark:#ede9df;--white:#ffffff;
+  --mid:#7a7567;--soft:#d8d3c8;--red:#c8241a;--red-dim:rgba(200,36,26,0.1);
+  --mono:'IBM Plex Mono',monospace;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',sans-serif;
+}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6}
+
+/* TICKER */
+.ticker{background:var(--red);color:var(--white);height:34px;display:flex;align-items:center;overflow:hidden;font-family:var(--mono);font-size:0.68rem;letter-spacing:0.12em;}
+.ticker-track{display:flex;gap:3rem;white-space:nowrap;animation:ticker 28s linear infinite;}
+.ticker-track span{opacity:0.85}.ticker-track strong{color:var(--white)}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:99;background:var(--paper);border-bottom:1.5px solid var(--ink);padding:0 2rem;height:58px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:var(--serif);font-size:1.25rem;font-weight:700;letter-spacing:-0.01em;color:var(--ink);font-style:italic;}
+.logo span{font-style:normal;font-weight:900}
+.header-cta{background:var(--red);color:var(--white);font-family:var(--sans);font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.55rem 1.4rem;border-radius:2px;text-decoration:none;border:1.5px solid var(--red);transition:background 120ms,color 120ms;}
+.header-cta:hover{background:transparent;color:var(--red)}
+
+/* HERO */
+.hero{background:var(--ink);color:var(--white);min-height:calc(100vh - 92px);display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;border-bottom:1.5px solid #222;}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:24px 24px;pointer-events:none;z-index:1;}
+
+/* left — copy */
+.hero-copy{position:relative;z-index:2;padding:5rem 3rem 5rem 4rem;display:flex;flex-direction:column;justify-content:center;}
+.hero-kicker{font-family:var(--mono);font-size:0.68rem;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;color:var(--red);margin-bottom:1.4rem;display:flex;align-items:center;gap:0.6rem;}
+.hero-kicker::before{content:'';width:24px;height:1.5px;background:var(--red)}
+h1{font-family:var(--serif);font-size:clamp(3rem,1.5rem + 4vw,6.5rem);line-height:1.0;font-weight:900;letter-spacing:-0.02em;color:var(--white);margin-bottom:1.75rem;}
+h1 em{font-style:italic;color:var(--red)}
+h1 .dim{color:#333}
+.hero-deck{font-size:clamp(0.92rem,0.82rem + 0.35vw,1.05rem);color:#888;line-height:1.75;max-width:480px;margin-bottom:2rem;}
+.hero-deck strong{color:#ccc}
+.hero-deck .num{font-family:var(--mono);color:var(--white);background:rgba(200,36,26,0.2);border:1px solid rgba(200,36,26,0.3);padding:0.1em 0.4em;border-radius:2px;}
+.hero-actions{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:0.5rem;background:var(--red);color:var(--white);font-family:var(--sans);font-size:0.82rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0 1.75rem;height:52px;border-radius:2px;text-decoration:none;transition:background 120ms,transform 120ms;border:1.5px solid var(--red);}
+.btn-primary:hover{background:#a81c14;transform:translateY(-1px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:0.4rem;color:#666;font-family:var(--mono);font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;padding-bottom:2px;border-bottom:1px solid #333;transition:color 120ms,border-color 120ms;}
+.btn-ghost:hover{color:#999;border-color:#666}
+
+/* right — image */
+.hero-img{position:relative;overflow:hidden;}
+.hero-img img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:brightness(0.88);}
+/* gradient fade left edge so copy side bleeds cleanly */
+.hero-img::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(to right,var(--ink) 0%,transparent 18%);}
+/* subtle warm vignette */
+.hero-img::after{content:'';position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse at 70% 50%,transparent 40%,rgba(13,13,11,0.45) 100%);}
+
+/* PROOF BAR */
+.proof-bar{background:var(--paper-dark);border-bottom:1.5px solid var(--soft);padding:0 2rem;}
+.proof-inner{max-width:1100px;margin:0 auto;display:flex;align-items:stretch;border-left:1.5px solid var(--soft);}
+.proof-item{flex:1;display:flex;flex-direction:column;justify-content:center;padding:1.25rem 1.75rem;border-right:1.5px solid var(--soft);}
+.proof-num{font-family:var(--serif);font-size:2rem;font-weight:900;color:var(--ink);line-height:1;}
+.proof-lbl{font-family:var(--mono);font-size:0.62rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--mid);margin-top:0.2rem;}
+
+/* SECTION UTILITIES */
+.section-inner{max-width:1100px;margin:0 auto}
+.s-label{font-family:var(--mono);font-size:0.65rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--mid);display:flex;align-items:center;gap:0.6rem;margin-bottom:0.7rem;}
+.s-label::before{content:'';width:20px;height:1px;background:var(--mid)}
+.s-title{font-family:var(--serif);font-size:clamp(2rem,1.2rem + 2.5vw,3.75rem);font-weight:900;line-height:1.05;letter-spacing:-0.02em;color:var(--ink);margin-bottom:0.75rem;}
+.s-title em{font-style:italic;color:var(--red)}
+.s-sub{font-size:clamp(0.95rem,0.88rem + 0.25vw,1.05rem);color:var(--mid);line-height:1.7;max-width:560px;}
+
+/* BENEFITS SECTION */
+.benefits-section{padding:5.5rem 2rem;background:var(--paper);border-bottom:1.5px solid var(--soft);}
+.benefits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:3rem;border:1.5px solid var(--soft);border-radius:3px;overflow:hidden;}
+.benefit-card{padding:2rem 1.75rem;border-right:1.5px solid var(--soft);position:relative;}
+.benefit-card:last-child{border-right:none}
+.benefit-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform 300ms ease;}
+.benefit-card:hover::before{transform:scaleX(1)}
+.ben-num{font-family:var(--serif);font-size:3.5rem;font-weight:900;font-style:italic;color:var(--soft);line-height:1;margin-bottom:1rem;}
+.ben-title{font-family:var(--serif);font-size:1.35rem;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:0.65rem;}
+.ben-body{font-size:0.88rem;color:var(--mid);line-height:1.7;}
+.ben-stat{margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--soft);font-family:var(--mono);font-size:0.62rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);}
+
+/* SOCIAL PROOF */
+.proof-section{padding:5.5rem 2rem;background:var(--paper-dark);border-bottom:1.5px solid var(--soft);}
+.testimonials{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:3rem;}
+.tcard{background:var(--white);border:1.5px solid var(--soft);border-radius:3px;padding:1.75rem;position:relative;}
+.tcard-stars{font-size:0.75rem;color:var(--red);letter-spacing:0.1em;margin-bottom:1rem;}
+.tcard-quote{font-family:var(--serif);font-size:1rem;font-style:italic;color:var(--ink);line-height:1.65;margin-bottom:1.25rem;}
+.tcard-author{display:flex;align-items:center;gap:0.75rem;}
+.tcard-avatar{width:36px;height:36px;border-radius:50%;background:var(--paper-dark);border:1.5px solid var(--soft);display:grid;place-items:center;font-size:0.9rem;flex-shrink:0;}
+.tcard-name{font-family:var(--sans);font-size:0.82rem;font-weight:700;color:var(--ink);}
+.tcard-role{font-family:var(--mono);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);}
+.tcard-delta{margin-top:1rem;padding:0.65rem 0.85rem;background:var(--paper-dark);border-left:2px solid var(--red);font-family:var(--mono);font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--red);}
+
+/* CALCULATOR */
+.calc-section{padding:5.5rem 2rem;background:var(--white);border-top:1.5px solid var(--soft);border-bottom:1.5px solid var(--soft);}
+.calc-header{margin-bottom:3rem;display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap;}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;}
+
+/* compact example strip */
+.example-strip{
+  display:flex;align-items:center;gap:0;
+  border:1.5px solid var(--soft);border-radius:3px;overflow:hidden;
+  margin-top:0.75rem;font-family:var(--mono);font-size:0.68rem;
+}
+.ex-tag{background:var(--paper-dark);padding:0.6rem 0.85rem;color:var(--mid);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border-right:1.5px solid var(--soft);white-space:nowrap;}
+.ex-items{display:flex;align-items:center;gap:0;flex:1;flex-wrap:wrap;}
+.ex-item{display:flex;align-items:center;gap:0.35rem;padding:0.6rem 0.85rem;border-right:1px solid var(--soft);}
+.ex-item:last-child{border-right:none}
+.ex-lbl{color:var(--mid)}.ex-val{font-weight:600;color:var(--ink);}
+.ex-val.lose{color:var(--red);text-decoration:line-through;opacity:0.7;}
+
+/* input cards */
+.inp-card{background:var(--paper);border:1.5px solid var(--soft);border-radius:3px;overflow:hidden;}
+.inp-head{padding:1rem 1.25rem;border-bottom:1.5px solid var(--soft);display:flex;align-items:baseline;gap:0.6rem;}
+.inp-head-num{font-family:var(--serif);font-size:1.4rem;font-weight:900;font-style:italic;color:var(--soft);line-height:1;}
+.inp-head-title{font-family:var(--mono);font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--mid);}
+.inp-body{padding:1.25rem;display:grid;gap:0.9rem;}
+.field{display:grid;gap:0.35rem;}
+.field label{font-family:var(--mono);font-size:0.62rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--mid);}
+.iw{position:relative;}
+.iw input{width:100%;height:46px;background:var(--white);border:1.5px solid var(--soft);border-radius:2px;font-family:var(--mono);font-size:0.95rem;font-weight:600;color:var(--ink);padding:0 1rem;transition:border-color 120ms;-moz-appearance:textfield;}
+.iw input::-webkit-outer-spin-button,.iw input::-webkit-inner-spin-button{-webkit-appearance:none;}
+.iw input::placeholder{color:#bbb;font-weight:400;}
+.iw input:focus{border-color:var(--ink);outline:none;background:var(--white);}
+.iw input.p{padding-left:1.5rem}.iw input.s{padding-right:1.5rem}
+.pfx,.sfx{position:absolute;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:0.82rem;font-weight:600;color:#bbb;pointer-events:none;}
+.pfx{left:0.65rem}.sfx{right:0.65rem}
+
+/* results */
+.result-col{display:grid;gap:1.25rem;position:sticky;top:72px;}
+.res-split{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.res-card{background:var(--paper);border:1.5px solid var(--soft);border-radius:3px;overflow:hidden;}
+.res-head{padding:0.85rem 1.1rem;border-bottom:1.5px solid var(--soft);display:flex;justify-content:space-between;align-items:center;}
+.res-title{font-family:var(--mono);font-size:0.62rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--mid);}
+.res-pill{font-family:var(--mono);font-size:0.58rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.18rem 0.5rem;border-radius:2px;}
+.res-pill.now{background:var(--soft);color:var(--mid)}.res-pill.suite{background:var(--ink);color:var(--white);}
+.res-body{padding:1rem 1.1rem;}
+.r-row{display:flex;justify-content:space-between;align-items:baseline;padding:0.4rem 0;border-bottom:1px solid var(--paper-dark);font-size:0.8rem;}
+.r-row:last-child{border-bottom:none}
+.r-lbl{color:var(--mid)}.r-val{font-family:var(--mono);font-weight:600;color:var(--ink);}
+.r-val.ph{color:var(--soft);font-weight:400;}
+.ann-row{padding:0.85rem 1.1rem;border-top:1.5px solid var(--soft);display:flex;justify-content:space-between;align-items:baseline;background:var(--paper-dark);}
+.ann-lbl{font-family:var(--mono);font-size:0.58rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--mid);}
+.ann-val{font-family:var(--serif);font-size:1.9rem;font-weight:900;color:var(--ink);line-height:1;}
+.ann-val.ph{color:var(--soft);font-size:1.5rem;font-weight:700;}
+.verdict{background:var(--ink);border-radius:3px;padding:1.5rem;position:relative;overflow:hidden;}
+.verdict::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:18px 18px;pointer-events:none;}
+.verdict-inner{position:relative;z-index:1;}
+.verdict-label{font-family:var(--mono);font-size:0.6rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#444;margin-bottom:0.4rem;}
+.verdict-num{font-family:var(--serif);font-size:clamp(2.5rem,2rem + 2vw,4rem);font-weight:900;font-style:italic;color:var(--white);line-height:1;margin-bottom:0.3rem;}
+.verdict-num.win{color:var(--red)}
+.verdict-sub{font-size:0.82rem;color:#555;line-height:1.5;}
+.verdict-sub strong{color:#888;}
+.bar-row{margin-top:1.25rem;}
+.bar-meta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:0.6rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#333;margin-bottom:0.4rem;}
+.bar-track{height:4px;background:#1a1a1a;border-radius:99px;overflow:hidden;}
+.bar-fill{height:100%;background:var(--red);border-radius:inherit;width:0%;transition:width 0.9s cubic-bezier(0.16,1,0.3,1);}
+.bar-end{text-align:right;font-family:var(--mono);font-size:0.58rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#2a2a2a;margin-top:0.3rem;}
+.calc-reset{margin-top:0.75rem;text-align:right;}
+.calc-reset button{font-family:var(--mono);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);background:none;border:none;cursor:pointer;padding:0.4rem 0;border-bottom:1px solid var(--soft);transition:color 120ms,border-color 120ms;}
+.calc-reset button:hover{color:var(--ink);border-color:var(--ink);}
+.calc-note{margin-top:1.25rem;font-family:var(--mono);font-size:0.62rem;color:var(--mid);text-align:center;}
+
+/* AGITATION */
+.agit{background:var(--ink);color:var(--white);padding:3.5rem 2rem;border-top:1.5px solid #111;border-bottom:1.5px solid #111;}
+.agit-inner{max-width:900px;margin:0 auto;text-align:center;}
+.agit-quote{font-family:var(--serif);font-size:clamp(1.5rem,1rem + 2vw,2.8rem);font-weight:700;font-style:italic;line-height:1.25;color:var(--white);margin-bottom:1.25rem;}
+.agit-quote em{color:var(--red);font-style:normal;}
+.agit-attr{font-family:var(--mono);font-size:0.68rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#444;}
+
+/* CTA */
+.cta-section{padding:6rem 2rem;background:var(--paper);border-top:1.5px solid var(--soft);}
+.cta-inner{max-width:680px;margin:0 auto;text-align:center;}
+.cta-above{font-family:var(--mono);font-size:0.65rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--mid);margin-bottom:1.25rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--red);}
+.cta-title{font-family:var(--serif);font-size:clamp(2.75rem,1.5rem + 4vw,5.5rem);font-weight:900;line-height:0.98;letter-spacing:-0.02em;color:var(--ink);margin-bottom:1.25rem;}
+.cta-title em{font-style:italic;color:var(--red);}
+.cta-body{font-size:1rem;color:var(--mid);line-height:1.7;margin-bottom:0.5rem;}
+.cta-offer{display:inline-block;font-family:var(--mono);font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink);background:var(--paper-dark);border:1.5px solid var(--soft);padding:0.65rem 1.25rem;border-radius:2px;margin-bottom:2rem;line-height:1.5;}
+.cta-offer strong{color:var(--red);}
+.cta-btn{display:inline-flex;align-items:center;gap:0.55rem;background:var(--red);color:var(--white);font-family:var(--sans);font-size:0.88rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0 2.25rem;height:60px;border-radius:2px;text-decoration:none;border:1.5px solid var(--red);transition:background 120ms,color 120ms,transform 120ms;box-shadow:0 4px 20px rgba(200,36,26,0.25);}
+.cta-btn:hover{background:transparent;color:var(--red);transform:translateY(-1px);}
+.cta-reassure{margin-top:1rem;font-family:var(--mono);font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid);}
+
+/* FOOTER */
+footer{background:var(--ink);border-top:1.5px solid #111;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;font-family:var(--mono);font-size:0.62rem;color:#333;}
+footer a{color:#333;text-decoration:none;transition:color 120ms;}
+footer a:hover{color:#666;}
+.footer-links{display:flex;gap:1.5rem;}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;min-height:auto;}
+  .hero-img{height:55vw;min-height:300px;}
+  .hero-copy{padding:3.5rem 2rem;}
+  .benefits-grid{grid-template-columns:1fr;}
+  .benefit-card{border-right:none;border-bottom:1.5px solid var(--soft);}
+  .benefit-card:last-child{border-bottom:none;}
+  .testimonials{grid-template-columns:1fr;}
+  .calc-grid{grid-template-columns:1fr;}
+  .result-col{position:static;}
+  .res-split{grid-template-columns:1fr 1fr;}
+  .proof-inner{flex-wrap:wrap;}
+  .proof-item{flex:0 0 50%;}
+  .example-strip{flex-direction:column;align-items:flex-start;}
+  .ex-tag{border-right:none;border-bottom:1.5px solid var(--soft);width:100%;}
+}
+@media(max-width:580px){
+  header{padding:0 1rem;}
+  .hero-copy{padding:2.5rem 1.25rem;}
+  .res-split{grid-template-columns:1fr;}
+  .proof-item{flex:0 0 100%;}
+  .benefits-section,.proof-section,.calc-section,.agit,.cta-section{padding-left:1.25rem;padding-right:1.25rem;}
+}
+</style>
+</head>
+<body>
+
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span>Commission stylists give away</span><strong>0,000–0,000/yr</strong><span>to their salon owner</span>
+    <span>·</span><span>Suite ownership = flat rent only</span><span>·</span>
+    <strong>700+ locations nationwide</strong><span>·</span><span>Suites are filling fast</span><span>·</span>
+    <span>Commission stylists give away</span><strong>0,000–0,000/yr</strong><span>to their salon owner</span>
+    <span>·</span><span>Suite ownership = flat rent only</span><span>·</span>
+    <strong>700+ locations nationwide</strong><span>·</span><span>Suites are filling fast</span><span>·</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">My <span>Salon Suite</span></div>
+  <a href="#cta" class="header-cta">Request Suite Info</a>
+</header>
+
+<!-- HERO: copy left, full-bleed image right -->
+<section class="hero">
+
+  <div class="hero-copy">
+    <div class="hero-kicker">For commission stylists &amp; booth renters</div>
+    <h1>
+      You earned it.<br>
+      <span class="dim">They</span> kept it.<br>
+      <em>Fix that.</em>
+    </h1>
+    <p class="hero-deck">
+      Right now, for every <span class="num">100</span> you earn,
+      your salon keeps <span class="num">30–60%</span> of it.
+      A suite costs flat rent — <strong>nothing else leaves your pocket.</strong>
+      Same clients. Same talent. A different address that changes everything.
+    </p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary">
+        Request Suite Info
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="#calculator" class="btn-ghost">
+        Run My Numbers
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-img">
+    <img src="./salon1.png" alt="Stylist working in a My Salon Suite private suite">
+  </div>
+
+</section>
+
+<!-- PROOF BAR -->
+<div class="proof-bar">
+  <div class="proof-inner">
+    <div class="proof-item"><div class="proof-num">$0</div><div class="proof-lbl">Commission taken from you</div></div>
+    <div class="proof-item"><div class="proof-num">4+</div><div class="proof-lbl">Locations</div></div>
+    <div class="proof-item"><div class="proof-num">~$68K</div><div class="proof-lbl">Avg. annual loss on commission</div></div>
+    <div class="proof-item"><div class="proof-num">Week 1</div><div class="proof-lbl">When you start keeping 100%</div></div>
+  </div>
+</div>
+
+<!-- BENEFITS -->
+<section class="benefits-section">
+  <div class="section-inner">
+    <div class="s-label">Why Suite Ownership</div>
+    <div class="s-title">Three things commission<br>can <em>never</em> give you.</div>
+
+    <div class="benefits-grid">
+
+      <div class="benefit-card">
+        <div class="ben-num">01</div>
+        <div class="ben-title">Keep Every Dollar You Earn</div>
+        <p class="ben-body">On commission you're an employee in everything but name. Suite ownership replaces a 55% tax on your labor with a flat weekly rent. The $5,000 your clients pay stays with you. Predictable costs. Unlimited upside.</p>
+        <div class="ben-stat">100% of service revenue — yours</div>
+      </div>
+
+      <div class="benefit-card">
+        <div class="ben-num">02</div>
+        <div class="ben-title">Your Schedule. Your Clients. Your Rules.</div>
+        <p class="ben-body">No mandatory floor hours. No asking permission. You book who you want, charge what the market bears, and build a clientele that belongs to you — not to the salon. When you leave, they follow you, not the address.</p>
+        <div class="ben-stat">Zero commissions, approvals, or shared booking</div>
+      </div>
+
+      <div class="benefit-card">
+        <div class="ben-num">03</div>
+        <div class="ben-title">You're Building a Business, Not a Job</div>
+        <p class="ben-body">Every commission stylist is involuntarily funding their salon owner's equity. Suite owners build their own. Your brand, your product revenue, your reputation — all compound in your favor. That equity goes wherever you go.</p>
+        <div class="ben-stat">Avg. suite owner income: 2–3× commission take-home</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="proof-section">
+  <div class="section-inner">
+    <div class="s-label">Real Results</div>
+    <div class="s-title">Same talent.<br><em>Different math.</em></div>
+
+    <div class="testimonials">
+
+      <div class="tcard">
+        <div class="tcard-stars">★★★★★</div>
+        <p class="tcard-quote">"I was generating $4,200 a week and taking home $1,900. I ran the numbers one Sunday and gave my notice Monday. Six months in my suite, I cleared $112,000 last year. Same exact clients."</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">✂️</div>
+          <div>
+            <div class="tcard-name">Dana Whitfield</div>
+            <div class="tcard-role">Color Specialist · Nashville, TN</div>
+          </div>
+        </div>
+        <div class="tcard-delta">+$64,000 first year vs. commission</div>
+      </div>
+
+      <div class="tcard">
+        <div class="tcard-stars">★★★★★</div>
+        <p class="tcard-quote">"I kept waiting for the right time. Then I did the calculator. I was handing away $72,000 a year. There is no right time to keep doing that. I signed the lease that week."</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">💅</div>
+          <div>
+            <div class="tcard-name">Marcus Reyes</div>
+            <div class="tcard-role">Nail Artist · Austin, TX</div>
+          </div>
+        </div>
+        <div class="tcard-delta">$72,000/yr recovered in year one</div>
+      </div>
+
+      <div class="tcard">
+        <div class="tcard-stars">★★★★★</div>
+        <p class="tcard-quote">"Nobody tells you how different it feels to walk into your own space. My clients love the privacy. I raised my prices 20% the first month. Revenue up 38% in 90 days without a single new client."</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">🌿</div>
+          <div>
+            <div class="tcard-name">Priya Anand</div>
+            <div class="tcard-role">Esthetician · Chicago, IL</div>
+          </div>
+        </div>
+        <div class="tcard-delta">+38% revenue · 90 days · zero new clients</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section class="calc-section" id="calculator">
+  <div class="section-inner">
+
+    <div class="calc-header">
+      <div>
+        <div class="s-label">Income Calculator</div>
+        <div class="s-title">See the exact number<br>you're <em>giving away.</em></div>
+        <!-- compact inline example — no space wasted -->
+        <div class="example-strip">
+          <div class="ex-tag">Example · $6k rev · 45%</div>
+          <div class="ex-items">
+            <div class="ex-item"><span class="ex-lbl">You earned</span><span class="ex-val">$6,000</span></div>
+            <div class="ex-item"><span class="ex-lbl">Salon kept</span><span class="ex-val lose">$3,300</span></div>
+            <div class="ex-item"><span class="ex-lbl">You took home</span><span class="ex-val">$2,720</span></div>
+            <div class="ex-item"><span class="ex-lbl">Suite owner keeps</span><span class="ex-val" style="color:var(--red)">$5,300+</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="s-sub" style="max-width:280px;font-size:0.88rem;">Enter your real numbers. No email required.</p>
+    </div>
+
+    <div class="calc-grid">
+
+      <div style="display:grid;gap:1rem">
+        <div class="inp-card">
+          <div class="inp-head">
+            <div class="inp-head-num">01</div>
+            <div class="inp-head-title">What You Generate — What They Keep</div>
+          </div>
+          <div class="inp-body">
+            <div class="field">
+              <label for="grossRevenue">Weekly Service Revenue</label>
+              <div class="iw"><span class="pfx">$</span><input type="number" id="grossRevenue" class="p" placeholder="6000" min="0" oninput="calc()"></div>
+            </div>
+            <div class="field">
+              <label for="commPct">Your Commission %</label>
+              <div class="iw"><input type="number" id="commPct" class="s" placeholder="45" min="0" max="100" oninput="calc()"><span class="sfx">%</span></div>
+            </div>
+            <div class="field">
+              <label for="prodSales">Weekly Product Sales</label>
+              <div class="iw"><span class="pfx">$</span><input type="number" id="prodSales" class="p" placeholder="200" min="0" oninput="calc()"></div>
+            </div>
+            <div class="field">
+              <label for="prodPct">Product Commission %</label>
+              <div class="iw"><input type="number" id="prodPct" class="s" placeholder="10" min="0" max="100" oninput="calc()"><span class="sfx">%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="inp-card">
+          <div class="inp-head">
+            <div class="inp-head-num">02</div>
+            <div class="inp-head-title">Suite Costs — That's All</div>
+          </div>
+          <div class="inp-body">
+            <div class="field">
+              <label for="rent">Weekly Suite Rent</label>
+              <div class="iw"><span class="pfx">$</span><input type="number" id="rent" class="p" placeholder="700" min="0" oninput="calc()"></div>
+            </div>
+            <div class="field">
+              <label for="misc">Weekly Misc. Expenses</label>
+              <div class="iw"><span class="pfx">$</span><input type="number" id="misc" class="p" placeholder="300" min="0" oninput="calc()"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-reset"><button onclick="resetCalc()">↺ Reset</button></div>
+      </div>
+
+      <div class="result-col">
+        <div class="res-split">
+          <div class="res-card">
+            <div class="res-head"><span class="res-title">Commission</span><span class="res-pill now">Now</span></div>
+            <div class="res-body">
+              <div class="r-row"><span class="r-lbl">Service earnings</span><span class="r-val ph" id="c-svc">—</span></div>
+              <div class="r-row"><span class="r-lbl">Salon keeps</span><span class="r-val ph" id="c-gone">—</span></div>
+              <div class="r-row"><span class="r-lbl">Product earnings</span><span class="r-val ph" id="c-prod">—</span></div>
+              <div class="r-row"><span class="r-lbl">Weekly net</span><span class="r-val ph" id="c-wk">—</span></div>
+            </div>
+            <div class="ann-row"><span class="ann-lbl">Annual</span><span class="ann-val ph" id="c-yr">—</span></div>
+          </div>
+          <div class="res-card">
+            <div class="res-head"><span class="res-title">Suite Owner</span><span class="res-pill suite">Suite</span></div>
+            <div class="res-body">
+              <div class="r-row"><span class="r-lbl">Service earnings</span><span class="r-val ph" id="s-svc">—</span></div>
+              <div class="r-row"><span class="r-lbl">Product earnings</span><span class="r-val ph" id="s-prod">—</span></div>
+              <div class="r-row"><span class="r-lbl">Rent</span><span class="r-val ph" id="s-rent">—</span></div>
+              <div class="r-row"><span class="r-lbl">Misc.</span><span class="r-val ph" id="s-misc">—</span></div>
+              <div class="r-row"><span class="r-lbl">Weekly net</span><span class="r-val ph" id="s-wk">—</span></div>
+            </div>
+            <div class="ann-row"><span class="ann-lbl">Annual</span><span class="ann-val ph" id="s-yr">—</span></div>
+          </div>
+        </div>
+
+        <div class="verdict">
+          <div class="verdict-inner">
+            <div class="verdict-label">Extra annual income as suite owner</div>
+            <div class="verdict-num" id="v-num">—</div>
+            <div class="verdict-sub" id="v-sub">Enter your numbers to see the gap.</div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>Commission</span><span id="bar-pct">—</span></div>
+              <div class="bar-track"><div class="bar-fill" id="bar-fill"></div></div>
+              <div class="bar-end">Suite Owner</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="calc-note">Estimates only · Suite rates vary by location · Product at 50% retention in suite model</p>
+  </div>
+</section>
+
+<!-- AGITATION -->
+<div class="agit">
+  <div class="agit-inner">
+    <div class="agit-quote">
+      "You are not an employee.<br>
+      You are a <em>business</em> paying rent<br>
+      to someone else's building."
+    </div>
+    <div class="agit-attr">The reality every commission stylist eventually faces</div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-inner">
+    <div class="cta-above"><div class="dot"></div>700+ locations · Suites filling now<div class="dot"></div></div>
+    <h2 class="cta-title">Your talent.<br><em>Your money.</em></h2>
+    <p class="cta-body">One conversation. We show you the space, the costs, and the exact math for your situation. No pitch. No pressure.</p>
+    <div class="cta-offer">Free tour · Real numbers · No commitment required<br><strong>Availability is limited per market — don't wait.</strong></div>
+    <br>
+    <a href="#" class="cta-btn">
+      Request Suite Info
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+    <p class="cta-reassure">No hard sell · No long-term lock-in · Just the facts</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>© 2025 My Salon Suite</div>
+  <div class="footer-links">
+    <a href="#">mysalonsuite.com</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+  </div>
+</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const fmt=n=>'$'+Math.round(n).toLocaleString('en-US');
+const get=id=>{const v=$(id).value.trim();return v===''?null:(parseFloat(v)||0)};
+function sv(id,text,ph){const el=$(id);el.textContent=text;ph?el.classList.add('ph'):el.classList.remove('ph');}
+function calc(){
+  const gr=get('grossRevenue'),cp=get('commPct'),wps=get('prodSales'),pcp=get('prodPct'),wr=get('rent'),wm=get('misc');
+  if([gr,cp,wps,pcp,wr,wm].every(v=>v===null)){blank();return}
+  const g=gr??0,c=(cp??0)/100,ps=wps??0,pc=(pcp??0)/100,r=wr??0,m=wm??0;
+  const cSvc=g*c,cGone=g-cSvc,cProd=ps*pc,cWk=cSvc+cProd,cYr=cWk*52;
+  const sSvc=g,sProd=ps*0.5,sWk=sSvc+sProd-r-m,sYr=sWk*52;
+  sv('c-svc',fmt(cSvc),false);sv('c-gone',fmt(cGone),false);sv('c-prod',fmt(cProd),false);sv('c-wk',fmt(cWk),false);sv('c-yr',fmt(cYr),false);
+  sv('s-svc',fmt(sSvc),false);sv('s-prod',fmt(sProd),false);sv('s-rent','−'+fmt(r),false);sv('s-misc','−'+fmt(m),false);sv('s-wk',fmt(sWk),false);sv('s-yr',fmt(sYr),false);
+  const diff=sYr-cYr,pct=sYr>0?Math.min(Math.round((cYr/sYr)*100),100):0;
+  $('bar-fill').style.width=pct+'%';$('bar-pct').textContent=pct+'%';
+  const vn=$('v-num');
+  if(diff>0){vn.textContent=fmt(diff);vn.classList.add('win');$('v-sub').innerHTML='More in your pocket every year. <strong>Same clients. Same talent.</strong>';}
+  else if(diff<0){vn.textContent=fmt(Math.abs(diff));vn.classList.remove('win');$('v-sub').innerHTML='Commission leads here. Try a lower rent figure — most markets have options.';}
+  else{vn.textContent='$0';vn.classList.remove('win');$('v-sub').textContent='Break-even — but you own the brand, the clientele, and the upside.';}
+}
+function blank(){
+  ['c-svc','c-gone','c-prod','c-wk','c-yr','s-svc','s-prod','s-rent','s-misc','s-wk','s-yr'].forEach(id=>sv(id,'—',true));
+  $('bar-fill').style.width='0%';$('bar-pct').textContent='—';$('v-num').textContent='—';$('v-num').classList.remove('win');$('v-sub').textContent='Enter your numbers to see the gap.';
+}
+function resetCalc(){['grossRevenue','commPct','prodSales','prodPct','rent','misc'].forEach(id=>$(id).value='');blank();}
+blank();
+</script>
+</body>
+</html>
